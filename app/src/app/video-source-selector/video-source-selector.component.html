@@ -2,6 +2,7 @@
   <button
     *ngFor="let camera of cameras"
     class="button"
+     [ngClass]="{ 'is-primary': camera.deviceId === selectedCameraID }"
     (click)="selectCamera(camera.deviceId)"
   >
     {{ camera.label }}

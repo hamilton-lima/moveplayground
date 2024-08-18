@@ -10,6 +10,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class VideoSourceSelectorComponent implements OnInit {
   error: string | null = null;
+  selectedCameraID: string | null = null;
   cameras: MediaDeviceInfo[] = [];
   @Output() cameraSelected = new EventEmitter<string>();
 
@@ -26,7 +27,8 @@ export class VideoSourceSelectorComponent implements OnInit {
     }
   }
 
-  selectCamera(cameraID: string) {
-    this.cameraSelected.emit(cameraID);
+  selectCamera(selectedCameraID: string) {
+    this.selectedCameraID = selectedCameraID;
+    this.cameraSelected.emit(selectedCameraID);
   }
 }
