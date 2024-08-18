@@ -55,7 +55,7 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
   private drawPoint(x: number, y: number): void {
     this.ctx.beginPath();
     this.ctx.arc(x, y, 5, 0, 2 * Math.PI); // Draw a circle at the keypoint
-    this.ctx.fillStyle = 'red'; // Set color
+    this.ctx.fillStyle = 'lightgreen'; // Set color
     this.ctx.fill();
   }
 }
