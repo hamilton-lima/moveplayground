@@ -15,11 +15,15 @@ graph LR
     E1 -->|Collaborative Movement| F[Shared Virtual Space]
     E2 -->|Collaborative Movement| F[Shared Virtual Space]
 ```
+# First version 
+- Indentify skeletal
+- Sync to Colyseus server
+- Display as 3D spheres
 
 # MVP 
 The goal of the initial version is to allow a remove shared experience during the halloween of 2024.
 
-- Research skeletal structure libraries
+- Research skeletal structure libraries - OK 
 - Identify skeletal structure nomenclature and compatible 3D models
 - Build first end to end synchonization implementation
 - Add URL option to display only the 3D rendering, to be watched in a separated screen
