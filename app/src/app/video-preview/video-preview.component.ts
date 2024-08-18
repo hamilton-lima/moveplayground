@@ -57,7 +57,6 @@ export class VideoPreviewComponent implements AfterViewInit, OnChanges {
 
     try {
       const video: HTMLVideoElement = this.videoRef.nativeElement;
-      this.videoReady.emit(video);
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           deviceId: { exact: this.selectedCameraID }, // Use the selected deviceId for the video stream
@@ -70,6 +69,7 @@ export class VideoPreviewComponent implements AfterViewInit, OnChanges {
       // Wait for the video to start
       const ready = new Promise<boolean>((resolve) => {
         video.onloadedmetadata = () => {
+          this.videoReady.emit(video);
           resolve(true);
         };
       });
