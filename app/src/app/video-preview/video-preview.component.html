@@ -1,1 +1,10 @@
-<p>video-preview works!</p>
+<video
+  #videoPlayer
+  playsinline
+  autoplay="true"
+  width="640"
+  height="480"
+></video>
+<div *ngIf="error">
+  {{ error }}
+</div>
