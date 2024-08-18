@@ -10,6 +10,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-video-preview',
@@ -23,7 +24,7 @@ export class VideoPreviewComponent implements AfterViewInit, OnChanges {
   @Input() selectedCameraID: string | null = null; // Input to receive selected video device ID
   @Output() videoReady = new EventEmitter<HTMLVideoElement>();
 
-  error: string | undefined = undefined;
+  constructor(private notification: NotificationService) {}
 
   async ngAfterViewInit(): Promise<boolean> {
     return this.startVideoStream();
@@ -41,17 +42,15 @@ export class VideoPreviewComponent implements AfterViewInit, OnChanges {
   }
 
   async startVideoStream(): Promise<boolean> {
-    this.error = undefined;
+    this.notification.clear();
 
     if (!this.videoRef || !this.videoRef.nativeElement) {
-      this.error = 'Not able to initialize video element';
-      console.warn(this.error);
+      this.notification.warning('Not able to initialize video element');
       return false;
     }
 
     if (!this.selectedCameraID) {
-      this.error = 'No camera selected';
-      console.warn(this.error);
+      this.notification.warning('No camera selected');
       return false;
     }
 
@@ -77,8 +76,9 @@ export class VideoPreviewComponent implements AfterViewInit, OnChanges {
       video.srcObject = stream;
       return ready;
     } catch (err) {
-      this.error = 'Unable to access the selected camera';
-      console.warn(this.error, err);
+      const message = 'Unable to access the selected camera';
+      this.notification.warning(message);
+      console.warn(message, err);
       return false;
     }
   }

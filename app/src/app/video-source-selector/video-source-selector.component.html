@@ -2,12 +2,9 @@
   <button
     *ngFor="let camera of cameras"
     class="button"
-     [ngClass]="{ 'is-primary': camera.deviceId === selectedCameraID }"
+    [ngClass]="{ 'is-primary': camera.deviceId === selectedCameraID }"
     (click)="selectCamera(camera.deviceId)"
   >
     {{ camera.label }}
   </button>
 </div>
-
-<div *ngIf="error" class="notification is-warning">{{ error }}</div>
-
