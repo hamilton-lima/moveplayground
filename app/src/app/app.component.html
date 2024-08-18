@@ -1,12 +1,21 @@
 <section class="section">
   <div class="container">
     <h1 class="title">MOVE PLAYGROUND</h1>
-    <app-video-source-selector
-      [selectedCameraID]="selectedCameraID"
-      (cameraSelected)="onCameraSelected($event)"
-    ></app-video-source-selector>
-    <app-video-preview
-      [selectedCameraID]="selectedCameraID"
-    ></app-video-preview>
+
+    <div class="fixed-grid">
+      <div class="grid">
+        <div class="cell">
+          <app-video-source-selector
+            [selectedCameraID]="selectedCameraID"
+            (cameraSelected)="onCameraSelected($event)"
+          ></app-video-source-selector>
+          <app-video-preview
+            [selectedCameraID]="selectedCameraID"
+            (videoReady)="onVideoReady($event)"
+          ></app-video-preview>
+        </div>
+        <div class="cell"><app-pose-preview [video]="video"></app-pose-preview></div>
+      </div>
+    </div>
   </div>
 </section>

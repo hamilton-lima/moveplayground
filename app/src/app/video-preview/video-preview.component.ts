@@ -3,7 +3,9 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -18,6 +20,8 @@ import {
 export class VideoPreviewComponent implements AfterViewInit {
   @ViewChild('videoPlayer') videoRef: ElementRef | null = null;
   @Input() selectedCameraID: string | null = null; // Input to receive selected video device ID
+  @Output() videoReady = new EventEmitter<HTMLVideoElement>();
+
   error: string | undefined = undefined;
 
   async ngAfterViewInit(): Promise<boolean> {
@@ -51,7 +55,8 @@ export class VideoPreviewComponent implements AfterViewInit {
     }
 
     try {
-      const video = this.videoRef.nativeElement;
+      const video: HTMLVideoElement = this.videoRef.nativeElement;
+      this.videoReady.emit(video);
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           deviceId: { exact: this.selectedCameraID }, // Use the selected deviceId for the video stream
