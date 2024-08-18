@@ -1,0 +1,13 @@
+<div>
+  <button
+    *ngFor="let camera of cameras"
+    class="button"
+    (click)="selectCamera(camera.deviceId)"
+  >
+    {{ camera.label }}
+  </button>
+</div>
+
+<div *ngIf="error">
+  {{ error }}
+</div>
