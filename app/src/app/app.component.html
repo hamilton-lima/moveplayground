@@ -1,7 +1,12 @@
 <section class="section">
   <div class="container">
     <h1 class="title">MOVE PLAYGROUND</h1>
-    <app-video-source-selector (cameraSelected)="onCameraSelected($event)"></app-video-source-selector>
-    <app-video-preview></app-video-preview>
+    <app-video-source-selector
+      [selectedCameraID]="selectedCameraID"
+      (cameraSelected)="onCameraSelected($event)"
+    ></app-video-source-selector>
+    <app-video-preview
+      [selectedCameraID]="selectedCameraID"
+    ></app-video-preview>
   </div>
 </section>

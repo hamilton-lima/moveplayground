@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-video-source-selector',
@@ -10,7 +10,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class VideoSourceSelectorComponent implements OnInit {
   error: string | null = null;
-  selectedCameraID: string | null = null;
+  @Input() selectedCameraID: string | null = null; // Input to receive selected video device ID
   cameras: MediaDeviceInfo[] = [];
   @Output() cameraSelected = new EventEmitter<string>();
 
@@ -19,8 +19,6 @@ export class VideoSourceSelectorComponent implements OnInit {
       // Get available video input devices (cameras)
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.cameras = devices.filter((device) => device.kind === 'videoinput');
-      console.log(this.cameras);
-      // Start the video stream using the selected camera
     } catch (err) {
       this.error = 'Not able to initialize video element';
       console.warn(this.error, err);
