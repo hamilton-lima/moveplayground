@@ -6,14 +6,15 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { PoseDetectorService } from '../pose-detector.service';
-import { PoseDetector } from '@tensorflow-models/pose-detection';
+import { Pose, PoseDetector } from '@tensorflow-models/pose-detection';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
+import { PoseDrawerComponent } from '../pose-drawer/pose-drawer.component';
 
 @Component({
   selector: 'app-pose-preview',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PoseDrawerComponent],
   templateUrl: './pose-preview.component.html',
   styleUrl: './pose-preview.component.scss',
 })
@@ -23,6 +24,7 @@ export class PosePreviewComponent implements OnInit {
   videoElement: HTMLVideoElement | null = null;
   error: string | undefined = undefined;
   output: string | null = null;
+  poses: Pose[] = [];
 
   constructor(private poseDectectorService: PoseDetectorService) {}
   async ngOnInit(): Promise<void> {
@@ -48,9 +50,8 @@ export class PosePreviewComponent implements OnInit {
 
     if (this.videoElement && this.poseDectectorService.isReady()) {
       console.log('detect pose');
-      const poses = await this.poseDectectorService.detect(this.videoElement);
-      console.log('detect pose', poses);
-      this.output = JSON.stringify(poses);
+      this.poses = await this.poseDectectorService.detect(this.videoElement);
+      console.log('detect pose', this.poses);
     }
   }
 

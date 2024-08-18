@@ -1,0 +1,10 @@
+.fixed-notification {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Ensure it appears above other elements */
+    width: 90%; /* Optional: adjust width as needed */
+    max-width: 500px;
+  }
+  

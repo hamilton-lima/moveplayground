@@ -10,6 +10,7 @@ import { VideoSourceSelectorComponent } from './video-source-selector/video-sour
 import { AppStateService } from './app-state.service';
 import { PosePreviewComponent } from './pose-preview/pose-preview.component';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { NotificationComponent } from './notification/notification.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
     VideoPreviewComponent,
     VideoSourceSelectorComponent,
     PosePreviewComponent,
+    NotificationComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

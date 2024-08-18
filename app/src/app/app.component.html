@@ -5,17 +5,20 @@
     <div class="fixed-grid">
       <div class="grid">
         <div class="cell">
-          <app-video-source-selector
-            [selectedCameraID]="selectedCameraID"
-            (cameraSelected)="onCameraSelected($event)"
-          ></app-video-source-selector>
           <app-video-preview
             [selectedCameraID]="selectedCameraID"
             (videoReady)="onVideoReady($event)"
           ></app-video-preview>
+          <app-pose-preview class="preview" [video]="video"></app-pose-preview>
+          <app-video-source-selector
+            [selectedCameraID]="selectedCameraID"
+            (cameraSelected)="onCameraSelected($event)"
+          ></app-video-source-selector>
         </div>
-        <div class="cell"><app-pose-preview [video]="video"></app-pose-preview></div>
       </div>
+    </div>
+    <div>
+      <app-notification></app-notification>
     </div>
   </div>
 </section>
