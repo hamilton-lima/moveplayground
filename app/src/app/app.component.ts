@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { VideoPreviewComponent } from './video-preview/video-preview.component';
 import { VideoSourceSelectorComponent } from './video-source-selector/video-source-selector.component';
@@ -17,14 +22,18 @@ import { PosePreviewComponent } from './pose-preview/pose-preview.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
   selectedCameraID: string | null = null;
   video: HTMLVideoElement | null = null;
 
-  constructor(private appStateService: AppStateService) {}
+  constructor(
+    private appStateService: AppStateService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.selectedCameraID = this.appStateService.getSelectedCamera();
+    this.cdr.detectChanges();
   }
 
   onCameraSelected(selectedCameraID: string) {
