@@ -9,6 +9,7 @@ import { VideoPreviewComponent } from './video-preview/video-preview.component';
 import { VideoSourceSelectorComponent } from './video-source-selector/video-source-selector.component';
 import { AppStateService } from './app-state.service';
 import { PosePreviewComponent } from './pose-preview/pose-preview.component';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ import { PosePreviewComponent } from './pose-preview/pose-preview.component';
 })
 export class AppComponent implements AfterViewInit {
   selectedCameraID: string | null = null;
-  video: HTMLVideoElement | null = null;
+  video: Subject<HTMLVideoElement> = new Subject();
 
   constructor(
     private appStateService: AppStateService,
@@ -42,6 +43,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   onVideoReady(video: HTMLVideoElement) {
-    this.video = video;
+    console.log('video updated', video);
+    this.video.next(video);
   }
 }

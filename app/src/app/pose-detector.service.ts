@@ -19,16 +19,20 @@ export class PoseDetectorService {
 
   // Initialize TensorFlow and pose detection
   async initPoseDetection(): Promise<poseDetection.PoseDetector> {
+    console.log('(1) initposedetection');
     // Wait for TensorFlow to be ready
     await tf.ready();
+    console.log('(2) initposedetection after tf is ready');
 
     if (!this.detector) {
+      console.log('(3) initposedetection no detector');
       const model = poseDetection.SupportedModels.BlazePose;
       this.detector = await poseDetection.createDetector(model, {
         runtime: 'tfjs',
         modelType: 'lite',
         maxPoses: 1,
       } as poseDetection.BlazePoseTfjsModelConfig);
+      console.log('(4) initposedetection detector created', this.detector);
     }
 
     return this.detector;

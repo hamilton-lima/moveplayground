@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   SimpleChanges,
   ViewChild,
@@ -17,7 +18,7 @@ import {
   templateUrl: './video-preview.component.html',
   styleUrls: ['./video-preview.component.scss'], // Fix typo from 'styleUrl' to 'styleUrls'
 })
-export class VideoPreviewComponent implements AfterViewInit {
+export class VideoPreviewComponent implements AfterViewInit, OnChanges {
   @ViewChild('videoPlayer') videoRef: ElementRef | null = null;
   @Input() selectedCameraID: string | null = null; // Input to receive selected video device ID
   @Output() videoReady = new EventEmitter<HTMLVideoElement>();

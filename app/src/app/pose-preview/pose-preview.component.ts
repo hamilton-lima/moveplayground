@@ -1,7 +1,14 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { PoseDetectorService } from '../pose-detector.service';
 import { PoseDetector } from '@tensorflow-models/pose-detection';
 import { CommonModule } from '@angular/common';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pose-preview',
@@ -11,27 +18,38 @@ import { CommonModule } from '@angular/common';
   styleUrl: './pose-preview.component.scss',
 })
 export class PosePreviewComponent implements OnInit {
-  @Input() video: HTMLVideoElement | null = null;
+  @Input() video: Subject<HTMLVideoElement> | null = null;
+
+  videoElement: HTMLVideoElement | null = null;
   error: string | undefined = undefined;
   output: string | null = null;
 
   constructor(private poseDectectorService: PoseDetectorService) {}
   async ngOnInit(): Promise<void> {
-    await this.poseDectectorService.initPoseDetection();
-  }
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes['video']) {
-      await this.previewPose();
+    console.log('video subject', this.video);
+    if (this.video) {
+      this.video.subscribe(async (videoElement: HTMLVideoElement) => {
+        this.videoElement = videoElement;
+        await this.previewPose();
+      });
     }
+
+    await this.poseDectectorService.initPoseDetection();
+    await this.previewPose();
   }
 
   async previewPose() {
-    console.log('preview pose');
+    console.log(
+      'preview pose',
+      this.videoElement,
+      this.poseDectectorService.isReady()
+    );
     this.check4Errors();
 
-    if (this.video && this.poseDectectorService.isReady()) {
-      const poses = await this.poseDectectorService.detect(this.video);
+    if (this.videoElement && this.poseDectectorService.isReady()) {
+      console.log('detect pose');
+      const poses = await this.poseDectectorService.detect(this.videoElement);
+      console.log('detect pose', poses);
       this.output = JSON.stringify(poses);
     }
   }
@@ -39,7 +57,7 @@ export class PosePreviewComponent implements OnInit {
   check4Errors() {
     this.error = undefined;
     const errors = [];
-    if (!this.video) {
+    if (!this.videoElement) {
       errors.push('No video found to estimate poses');
     }
     if (!this.poseDectectorService.isReady()) {
