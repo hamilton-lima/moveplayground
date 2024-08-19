@@ -19,7 +19,9 @@ graph LR
 - Indentify skeletal - OK 
     - Preview overlay in the video - OK
     - Choose video source - OK 
-    - Draw lines to connect the key body parts
+    - Draw lines to connect the key body parts - OK
+
+- Enable multiple pode detection, is working with only one, see documentation https://github.com/tensorflow/tfjs-models/tree/master/pose-detection
 
 - Sync to Colyseus server
 - Display as 3D spheres
