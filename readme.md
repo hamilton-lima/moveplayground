@@ -16,7 +16,11 @@ graph LR
     E2 -->|Collaborative Movement| F[Shared Virtual Space]
 ```
 # First version 
-- Indentify skeletal
+- Indentify skeletal - OK 
+    - Preview overlay in the video - OK
+    - Choose video source - OK 
+    - Draw lines to connect the key body parts
+
 - Sync to Colyseus server
 - Display as 3D spheres
 

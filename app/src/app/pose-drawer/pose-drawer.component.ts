@@ -6,7 +6,54 @@ import {
   Input,
   OnChanges,
 } from '@angular/core';
-import { Pose } from '@tensorflow-models/pose-detection';
+import { Keypoint, Pose } from '@tensorflow-models/pose-detection';
+
+const keypointConnections: [string, string][] = [
+  // Head
+  ['nose', 'left_eye_inner'],
+  ['nose', 'right_eye_inner'],
+  ['left_eye_inner', 'left_eye'],
+  ['left_eye', 'left_eye_outer'],
+  ['right_eye_inner', 'right_eye'],
+  ['right_eye', 'right_eye_outer'],
+  ['left_eye_outer', 'left_ear'],
+  ['right_eye_outer', 'right_ear'],
+
+  // Mouth
+  ['mouth_left', 'mouth_right'],
+
+  // Upper body
+  ['left_shoulder', 'right_shoulder'],
+  ['left_shoulder', 'left_elbow'],
+  ['left_elbow', 'left_wrist'],
+  ['right_shoulder', 'right_elbow'],
+  ['right_elbow', 'right_wrist'],
+
+  // Hands (optional)
+  ['left_wrist', 'left_thumb'],
+  ['left_wrist', 'left_index'],
+  ['left_wrist', 'left_pinky'],
+  ['right_wrist', 'right_thumb'],
+  ['right_wrist', 'right_index'],
+  ['right_wrist', 'right_pinky'],
+
+  // Torso
+  ['left_shoulder', 'left_hip'],
+  ['right_shoulder', 'right_hip'],
+  ['left_hip', 'right_hip'],
+
+  // Lower body
+  ['left_hip', 'left_knee'],
+  ['left_knee', 'left_ankle'],
+  ['right_hip', 'right_knee'],
+  ['right_knee', 'right_ankle'],
+
+  // Feet (optional)
+  ['left_ankle', 'left_foot_index'],
+  ['left_ankle', 'left_heel'],
+  ['right_ankle', 'right_foot_index'],
+  ['right_ankle', 'right_heel'],
+];
 
 @Component({
   selector: 'app-pose-drawer',
@@ -44,18 +91,56 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
 
     this.poses.forEach((pose) => {
       const keypoints = pose.keypoints;
+      console.log('key points', pose.keypoints);
       keypoints.forEach((keypoint: any) => {
-        if (keypoint.score > 0.98) {
-          this.drawPoint(keypoint.x, keypoint.y);
-        }
+        this.drawPoint(keypoint.x, keypoint.y, keypoint.score);
       });
+
+      this.drawSkeletonWithStrings(pose.keypoints);
     });
   }
 
-  private drawPoint(x: number, y: number): void {
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, 5, 0, 2 * Math.PI); // Draw a circle at the keypoint
-    this.ctx.fillStyle = 'lightgreen'; // Set color
-    this.ctx.fill();
+  private drawPoint(x: number, y: number, score: number): void {
+    if (score > 0.5) {
+      const color = this.getColorForConfidence(score); // Get the color based on confidence
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, 5, 0, 2 * Math.PI); // Draw a circle at the keypoint
+      this.ctx.fillStyle = color; // Set color based on confidence
+      this.ctx.fill();
+    }
+  }
+
+  private getColorForConfidence(score: number): string {
+    // Normalize the score between 0 and 1
+    const normalizedScore = (score - 0.5) * 2; // This maps 0.5 to 0 and 1 to 1
+    const hue = Math.floor(normalizedScore * 120); // 0 is red, 120 is green
+    return `hsl(${hue}, 100%, 50%)`; // HSL color where hue depends on normalized score
+  }
+
+  drawSkeletonWithStrings(keypoints: Keypoint[]) {
+    const keypointMap = keypoints.reduce((map, keypoint) => {
+      if (keypoint.name) {
+        map[keypoint.name] = keypoint;
+      }
+      return map;
+    }, {} as { [key: string]: any });
+
+    console.log('map', keypointMap);
+
+    keypointConnections.forEach(([part1, part2]) => {
+      const kp1 = keypointMap[part1];
+      const kp2 = keypointMap[part2];
+      console.log('points', part1, part2, kp1, kp2);
+
+      // Only draw the line if both keypoints have a score greater than a threshold (e.g., 0.5)
+      if (kp1 && kp2 && kp1.score > 0.5 && kp2.score > 0.5) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(kp1.x, kp1.y);
+        this.ctx.lineTo(kp2.x, kp2.y);
+        this.ctx.strokeStyle = 'white';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+      }
+    });
   }
 }
