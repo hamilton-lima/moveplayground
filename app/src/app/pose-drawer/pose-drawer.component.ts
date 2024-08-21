@@ -91,7 +91,6 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
 
     this.poses.forEach((pose) => {
       const keypoints = pose.keypoints;
-      console.log('key points', pose.keypoints);
       keypoints.forEach((keypoint: any) => {
         this.drawPoint(keypoint.x, keypoint.y, keypoint.score);
       });
@@ -125,12 +124,9 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
       return map;
     }, {} as { [key: string]: any });
 
-    console.log('map', keypointMap);
-
     keypointConnections.forEach(([part1, part2]) => {
       const kp1 = keypointMap[part1];
       const kp2 = keypointMap[part2];
-      console.log('points', part1, part2, kp1, kp2);
 
       // Only draw the line if both keypoints have a score greater than a threshold (e.g., 0.5)
       if (kp1 && kp2 && kp1.score > 0.5 && kp2.score > 0.5) {

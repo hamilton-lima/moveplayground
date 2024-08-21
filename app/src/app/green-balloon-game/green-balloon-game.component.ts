@@ -21,10 +21,10 @@ export class GreenBalloonGameComponent implements OnInit {
   ctx!: CanvasRenderingContext2D;
   balloons: Balloon[] = [];
 
-  lines: number[] = [];
-  currentLine = 0;
   readonly MAX_LINES = 5;
   readonly MAX_COLUMNS = 5;
+  lines: number[] = [];
+  currentLine = this.MAX_LINES;
 
   greenCount = 0;
   redCount = 0;
@@ -53,6 +53,8 @@ export class GreenBalloonGameComponent implements OnInit {
       const yPos = heightOfEachLine * i;
       this.lines.push(yPos);
     }
+
+    console.log('lines', this.lines, this.currentLine);
   }
 
   setup() {

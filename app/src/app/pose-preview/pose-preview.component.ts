@@ -30,7 +30,6 @@ export class PosePreviewComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    console.log('video subject', this.video);
     if (this.video) {
       this.video.subscribe(async (videoElement: HTMLVideoElement) => {
         this.videoElement = videoElement;
