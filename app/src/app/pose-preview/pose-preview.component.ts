@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { PoseDrawerComponent } from '../pose-drawer/pose-drawer.component';
 import { NotificationService } from '../notification.service';
-import { PreviewRefreshService } from '../preview-refresh.service';
+import { PreviewRefreshHelper } from '../preview-refresh.helper';
 
 @Component({
   selector: 'app-pose-preview',
@@ -20,15 +20,16 @@ export class PosePreviewComponent implements OnInit {
   videoElement: HTMLVideoElement | null = null;
   output: string | null = null;
   poses: Pose[] = [];
+  private refresh: PreviewRefreshHelper;
 
   constructor(
     private poseDectectorService: PoseDetectorService,
-    private notification: NotificationService,
-    private refresh: PreviewRefreshService
-  ) {}
+    private notification: NotificationService
+  ) {
+    this.refresh = PreviewRefreshHelper.getInstance();
+  }
 
   async ngOnInit(): Promise<void> {
-    console.log('video subject', this.video);
     if (this.video) {
       this.video.subscribe(async (videoElement: HTMLVideoElement) => {
         this.videoElement = videoElement;

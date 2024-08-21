@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PreviewRefreshService {
+export class PreviewRefreshHelper {
   private fps: number = 10;
   private lastFrameTime: number = 0;
   private running = false;
-  render: Subject<void> = new Subject();
+  render: Subject<number> = new Subject();
+
+  static getInstance() {
+    return new PreviewRefreshHelper();
+  }
+
+  private constructor() {}
 
   setup(fps: number) {
     this.fps = fps;
@@ -38,7 +40,7 @@ export class PreviewRefreshService {
       }
 
       if (this.running) {
-        this.render.next();
+        this.render.next(elapsedTime);
         this.animate();
       }
     });
