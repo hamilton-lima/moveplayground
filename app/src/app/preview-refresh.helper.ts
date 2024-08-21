@@ -4,13 +4,15 @@ export class PreviewRefreshHelper {
   private fps: number = 10;
   private lastFrameTime: number = 0;
   private running = false;
-  render: Subject<number> = new Subject();
+  render: Subject<number>;
 
   static getInstance() {
     return new PreviewRefreshHelper();
   }
 
-  private constructor() {}
+  private constructor() {
+    this.render = new Subject();
+  }
 
   setup(fps: number) {
     this.fps = fps;
