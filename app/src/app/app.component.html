@@ -10,6 +10,7 @@
             (videoReady)="onVideoReady($event)"
           ></app-video-preview>
           <app-pose-preview class="preview" [video]="video"></app-pose-preview>
+          <app-green-balloon-game class="green-balloon"></app-green-balloon-game>
           <app-video-source-selector
             [selectedCameraID]="selectedCameraID"
             (cameraSelected)="onCameraSelected($event)"
