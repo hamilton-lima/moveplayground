@@ -10,11 +10,11 @@
 
 <section class="section">
   <div class="container">
-    <app-video-preview
+    <app-video-preview class="video-preview"
       [selectedCameraID]="selectedCameraID"
       (videoReady)="onVideoReady($event)"
     ></app-video-preview>
-    <app-pose-preview class="preview" [video]="video"></app-pose-preview>
+    <app-pose-preview class="pose-preview" [video]="video"></app-pose-preview>
     <app-green-balloon-game class="green-balloon"></app-green-balloon-game>
   </div>
 </section>

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PreviewRefreshHelper } from '../preview-refresh.helper';
 
 class Balloon {
@@ -45,12 +45,11 @@ export class GreenBalloonGameComponent implements OnInit {
   }
 
   calculateLines() {
-    const heightOfEachLine = Math.floor(
-      this.canvas.height / this.MAX_LINES / 2
-    );
+    const heightOfEachLine = Math.floor(this.canvas.height / this.MAX_LINES);
+    const halfLine = heightOfEachLine / 2;
 
-    for (let i = 1; i < this.MAX_LINES; i++) {
-      const yPos = heightOfEachLine * i;
+    for (let i = 1; i <= this.MAX_LINES; i++) {
+      const yPos = heightOfEachLine * i - halfLine;
       this.lines.push(yPos);
     }
 
@@ -64,8 +63,6 @@ export class GreenBalloonGameComponent implements OnInit {
       throw new Error('Not able to get canvas context');
     }
     this.ctx = context;
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
   }
 
   start() {
