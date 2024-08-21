@@ -9,7 +9,7 @@ import { VideoPreviewComponent } from './video-preview/video-preview.component';
 import { VideoSourceSelectorComponent } from './video-source-selector/video-source-selector.component';
 import { AppStateService } from './app-state.service';
 import { PosePreviewComponent } from './pose-preview/pose-preview.component';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { NotificationComponent } from './notification/notification.component';
 import { GreenBalloonGameComponent } from './green-balloon-game/green-balloon-game.component';
 
