@@ -25,6 +25,7 @@ export class GreenBalloonGameComponent implements OnInit {
 
   readonly MAX_LINES = 4;
   readonly BALLOON_RADIUS = 30;
+  readonly MIN_BALLOONS = 5;
 
   lines: number[] = [];
   currentLine = this.MAX_LINES - 1;
@@ -77,28 +78,21 @@ export class GreenBalloonGameComponent implements OnInit {
       this.udpate();
     });
 
-    this.addBalloons();
     this.refresh.start();
   }
 
   udpate() {
     this.clearScreen();
+    this.keepMinimumAmountOfBalloons();
     this.drawPossiblePositions(this.possiblePositions);
     this.drawAllBalloons();
     this.drawTimer();
-    // this.moveBallons();
   }
 
-  // moveBallons() {
-  //   const newLine = this.lines[this.currentLine--];
-  //   if (this.currentLine < 0) {
-  //     this.currentLine = this.MAX_LINES - 1;
-  //   }
-
-  //   this.balloons.forEach((balloon) => {
-  //     balloon.y = newLine;
-  //   });
-  // }
+  keepMinimumAmountOfBalloons() {
+    const missing = this.MIN_BALLOONS - this.balloons.length;
+    this.addBalloons(missing);
+  }
 
   updateTimer(elapsed: number) {
     this.currentTime += elapsed;
@@ -129,14 +123,24 @@ export class GreenBalloonGameComponent implements OnInit {
     this.ctx.fill();
   }
 
-  addBalloons() {
-    const balloonCount = 4;
-    // clone the possible positions
-    const availablePositions = [...this.possiblePositions];
+  addBalloons(balloonCount: number) {
+    // Clone the possible positions
+    let availablePositions = [...this.possiblePositions];
 
-    for (let i = 0; i < balloonCount; i++) {
+    // Remove positions that are already occupied by existing balloons
+    this.balloons.forEach((balloon) => {
+      availablePositions = availablePositions.filter((position) => {
+        const dist = Math.sqrt(
+          (position.x - balloon.x) ** 2 + (position.y - balloon.y) ** 2
+        );
+        return dist >= this.BALLOON_RADIUS * 2; // Ensure no overlap by checking distance
+      });
+    });
+
+    // Add new balloons at random positions
+    for (let i = 0; i < balloonCount && availablePositions.length > 0; i++) {
       const randomIndex = Math.floor(Math.random() * availablePositions.length);
-      const { x, y } = availablePositions.splice(randomIndex, 1)[0];
+      const { x, y } = availablePositions.splice(randomIndex, 1)[0]; // Remove the chosen position from the list
 
       const balloon: Balloon = {
         id: crypto.randomUUID(),
