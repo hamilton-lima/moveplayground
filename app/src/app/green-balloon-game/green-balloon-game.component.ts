@@ -7,6 +7,7 @@ class Balloon {
   radius: number = 2;
   color: string = '#FFFFFF';
   popped: boolean = false;
+  creationTime: number = 0;
 }
 
 @Component({
@@ -22,7 +23,8 @@ export class GreenBalloonGameComponent implements OnInit {
   balloons: Balloon[] = [];
 
   readonly MAX_LINES = 4;
-  readonly MAX_COLUMNS = 5;
+  readonly BALLOON_RADIUS = 30;
+
   lines: number[] = [];
   currentLine = this.MAX_LINES - 1;
 
@@ -33,6 +35,7 @@ export class GreenBalloonGameComponent implements OnInit {
   currentTime = 0; // Timer for each round (60 seconds)
 
   private refresh: PreviewRefreshHelper;
+  possiblePositions: { x: number; y: number }[] = [];
 
   constructor() {
     this.refresh = PreviewRefreshHelper.getInstance();
@@ -41,6 +44,7 @@ export class GreenBalloonGameComponent implements OnInit {
   ngOnInit() {
     this.setup();
     this.calculateLines();
+    this.possiblePositions = this.calculatePossiblePositions(5);
     this.start();
   }
 
@@ -72,19 +76,31 @@ export class GreenBalloonGameComponent implements OnInit {
       this.udpate();
     });
 
-    this.addsTestBalloons();
+    this.addBalloons();
     this.refresh.start();
   }
 
-  // TODO: remove this
-  addsTestBalloons() {
-    this.balloons.push(this.getNewBallon());
-    this.balloons.push(this.getNewBallon());
-    this.balloons.push(this.getNewBallon());
+  udpate() {
+    this.clearScreen();
+    this.drawPossiblePositions(this.possiblePositions);
+    this.drawAllBalloons();
+    this.drawTimer();
+    this.moveBallons();
+  }
+
+  moveBallons() {
+    const newLine = this.lines[this.currentLine--];
+    if (this.currentLine < 0) {
+      this.currentLine = this.MAX_LINES - 1;
+    }
+
+    this.balloons.forEach((balloon) => {
+      balloon.y = newLine;
+    });
   }
 
   updateTimer(elapsed: number) {
-    this.currentTime -= elapsed;
+    this.currentTime += elapsed;
   }
 
   getNewBallon(): Balloon {
@@ -96,15 +112,10 @@ export class GreenBalloonGameComponent implements OnInit {
       color: Math.random() > 0.5 ? 'green' : 'red',
       radius: 30,
       popped: false,
+      creationTime: performance.now(),
     };
 
     return result;
-  }
-
-  udpate() {
-    this.clearScreen();
-    this.drawAllBalloons();
-    this.drawTimer();
   }
 
   clearScreen() {
@@ -112,10 +123,11 @@ export class GreenBalloonGameComponent implements OnInit {
   }
 
   drawTimer() {
+    const seconds = Math.floor(this.currentTime / 1000);
     // Draw timer
     this.ctx.fillStyle = '#000';
     this.ctx.font = '20px Arial';
-    this.ctx.fillText(`Time: ${this.currentTime}s`, 10, 20);
+    this.ctx.fillText(`Time: ${seconds} seconds`, 10, 20);
   }
 
   drawAllBalloons() {
@@ -131,70 +143,60 @@ export class GreenBalloonGameComponent implements OnInit {
     this.ctx.fill();
   }
 
-  // startGame() {
-  //   let gameInterval = setInterval(() => {
-  //     this.updateCanvas();
-  //   }, 1000 / 60);
+  addBalloons() {
+    const balloonCount = 4;
+    // clone the possible positions
+    const availablePositions = [...this.possiblePositions];
 
-  //   let timerInterval = setInterval(() => {
-  //     this.timer--;
-  //     if (this.timer <= 0) {
-  //       this.resetRound();
-  //     }
-  //   }, 1000);
+    for (let i = 0; i < balloonCount; i++) {
+      const randomIndex = Math.floor(Math.random() * availablePositions.length);
+      const { x, y } = availablePositions.splice(randomIndex, 1)[0];
 
-  //   setTimeout(() => {
-  //     clearInterval(gameInterval);
-  //     clearInterval(timerInterval);
-  //     this.endGame();
-  //   }, this.gameTime);
-  // }
+      const balloon: Balloon = {
+        x: x,
+        y: y,
+        color: Math.random() > 0.5 ? 'green' : 'red',
+        radius: this.BALLOON_RADIUS,
+        popped: false,
+        creationTime: performance.now(),
+      };
 
-  // resetRound() {
-  //   this.timer = 60;
-  //   this.spawnBalloons();
-  // }
+      this.balloons.push(balloon);
+    }
+  }
 
-  // spawnBalloons() {
-  //   if (this.canvas) {
-  //     // Create balloons in random positions
-  //     for (let i = 0; i < 10; i++) {
-  //       this.balloons.push({
-  //         x: Math.random() * this.canvas.width,
-  //         y: this.canvas.height,
-  //         color: Math.random() > 0.5 ? 'green' : 'red',
-  //         radius: 30,
-  //         speed: Math.random() * 2 + 1,
-  //         popped: false,
-  //       });
-  //     }
-  //   }
-  // }
+  calculatePossiblePositions(balloonCount: number): { x: number; y: number }[] {
+    const positions: { x: number; y: number }[] = [];
 
-  // update() {
-  //   if (!this.ctx || !this.canvas) {
-  //     console.warn('No context or canvas found');
-  //     return;
-  //   }
+    const padding = this.BALLOON_RADIUS * 2; // Ensure there is space between balloons
+    const horizontalSpacing = this.BALLOON_RADIUS * 2 + padding;
+    const totalWidth = this.canvas.width;
 
-  //   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // Calculate possible positions along each line
+    this.lines.forEach((y) => {
+      let currentX = padding;
 
-  //   // Draw timer
-  //   this.ctx.fillStyle = '#000';
-  //   this.ctx.font = '20px Arial';
-  //   this.ctx.fillText(`Time: ${this.timer}s`, 10, 20);
+      // Ensure there is enough space for all balloons
+      while (currentX + this.BALLOON_RADIUS * 2 <= totalWidth) {
+        positions.push({ x: currentX + this.BALLOON_RADIUS, y: y }); // Store center position
+        currentX += horizontalSpacing; // Move to the next position
+      }
+    });
 
-  //   // Draw balloons
-  //   this.balloons.forEach((balloon) => {
-  //     if (!balloon.popped && this.ctx) {
-  //       balloon.y -= balloon.speed;
-  //       this.ctx.beginPath();
-  //       this.ctx.arc(balloon.x, balloon.y, balloon.radius, 0, 2 * Math.PI);
-  //       this.ctx.fillStyle = balloon.color;
-  //       this.ctx.fill();
-  //     }
-  //   });
-  // }
+    console.log('positions', positions);
+    return positions;
+  }
+
+  drawPossiblePositions(positions: { x: number; y: number }[]) {
+    this.ctx.strokeStyle = '#cccccc'; // Set the outline color for the empty circles
+    this.ctx.lineWidth = 2;
+
+    positions.forEach(({ x, y }) => {
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, this.BALLOON_RADIUS, 0, 2 * Math.PI);
+      this.ctx.stroke(); // Draw the outline of the circle
+    });
+  }
 
   // popBalloon(balloon: any) {
   //   if (!balloon.popped) {
@@ -205,11 +207,6 @@ export class GreenBalloonGameComponent implements OnInit {
   //       this.redCount++;
   //     }
   //   }
-  // }
-
-  // endGame() {
-  //   // Display the final score
-  //   alert(`Game Over! Green: ${this.greenCount}, Red: ${this.redCount}`);
   // }
 
   // @HostListener('document:click', ['$event'])
