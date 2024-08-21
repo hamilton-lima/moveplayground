@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { PreviewRefreshHelper } from '../preview-refresh.helper';
 
 class Balloon {
+  id: string = '';
   x: number = 0;
   y: number = 0;
   radius: number = 2;
@@ -85,37 +86,22 @@ export class GreenBalloonGameComponent implements OnInit {
     this.drawPossiblePositions(this.possiblePositions);
     this.drawAllBalloons();
     this.drawTimer();
-    this.moveBallons();
+    // this.moveBallons();
   }
 
-  moveBallons() {
-    const newLine = this.lines[this.currentLine--];
-    if (this.currentLine < 0) {
-      this.currentLine = this.MAX_LINES - 1;
-    }
+  // moveBallons() {
+  //   const newLine = this.lines[this.currentLine--];
+  //   if (this.currentLine < 0) {
+  //     this.currentLine = this.MAX_LINES - 1;
+  //   }
 
-    this.balloons.forEach((balloon) => {
-      balloon.y = newLine;
-    });
-  }
+  //   this.balloons.forEach((balloon) => {
+  //     balloon.y = newLine;
+  //   });
+  // }
 
   updateTimer(elapsed: number) {
     this.currentTime += elapsed;
-  }
-
-  getNewBallon(): Balloon {
-    const y = this.lines[this.currentLine];
-
-    const result: Balloon = {
-      x: Math.random() * this.canvas.width,
-      y: y,
-      color: Math.random() > 0.5 ? 'green' : 'red',
-      radius: 30,
-      popped: false,
-      creationTime: performance.now(),
-    };
-
-    return result;
   }
 
   clearScreen() {
@@ -153,6 +139,7 @@ export class GreenBalloonGameComponent implements OnInit {
       const { x, y } = availablePositions.splice(randomIndex, 1)[0];
 
       const balloon: Balloon = {
+        id: crypto.randomUUID(),
         x: x,
         y: y,
         color: Math.random() > 0.5 ? 'green' : 'red',
@@ -198,29 +185,39 @@ export class GreenBalloonGameComponent implements OnInit {
     });
   }
 
-  // popBalloon(balloon: any) {
-  //   if (!balloon.popped) {
-  //     balloon.popped = true;
-  //     if (balloon.color === 'green') {
-  //       this.greenCount++;
-  //     } else {
-  //       this.redCount++;
-  //     }
-  //   }
-  // }
+  popBalloon(balloon: Balloon) {
+    if (!balloon.popped) {
+      balloon.popped = true;
+      if (balloon.color === 'green') {
+        this.greenCount++;
+      } else {
+        this.redCount++;
+      }
 
-  // @HostListener('document:click', ['$event'])
-  // handleClick(event: MouseEvent) {
-  //   const clickX = event.clientX;
-  //   const clickY = event.clientY;
+      this.balloons = this.balloons.filter((one) => {
+        return one.id != balloon.id;
+      });
+    }
+  }
 
-  //   this.balloons.forEach((balloon) => {
-  //     const dist = Math.sqrt(
-  //       (clickX - balloon.x) ** 2 + (clickY - balloon.y) ** 2
-  //     );
-  //     if (dist < balloon.radius) {
-  //       this.popBalloon(balloon);
-  //     }
-  //   });
-  // }
+  @HostListener('document:click', ['$event'])
+  handleClick(event: MouseEvent) {
+    // Get the bounding rectangle of the canvas
+    const rect = this.canvas.getBoundingClientRect();
+
+    // Calculate the click coordinates relative to the canvas
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+
+    console.log('click', clickX, clickY);
+
+    this.balloons.forEach((balloon) => {
+      const dist = Math.sqrt(
+        (clickX - balloon.x) ** 2 + (clickY - balloon.y) ** 2
+      );
+      if (dist < balloon.radius) {
+        this.popBalloon(balloon);
+      }
+    });
+  }
 }
