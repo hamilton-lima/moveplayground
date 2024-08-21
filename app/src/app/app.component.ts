@@ -1,9 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { VideoPreviewComponent } from './video-preview/video-preview.component';
 import { VideoSourceSelectorComponent } from './video-source-selector/video-source-selector.component';
