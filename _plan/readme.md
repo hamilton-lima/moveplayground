@@ -6,6 +6,7 @@
 - Single Skeleton detection
 - Blow green balloons game
 - Deploy game moveplayground.com
+- What metrics send to Mixpanel?
 
 ### Next steps 
 - Multiplayer Video and audio
