@@ -7,6 +7,10 @@ import {
   OnChanges,
 } from '@angular/core';
 import { Keypoint, Pose } from '@tensorflow-models/pose-detection';
+import {
+  CurrentPoseStateService,
+  Hand,
+} from '../pose-detector/current-pose-state.service';
 
 // draw
 // 'left_eye',
@@ -82,6 +86,8 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
 
   private canvas!: HTMLCanvasElement;
   private ctx!: CanvasRenderingContext2D;
+
+  constructor(private poseState: CurrentPoseStateService) {}
 
   ngAfterViewInit(): void {
     this.canvas = this.canvasRef.nativeElement;
@@ -229,17 +235,26 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
     const keypointMap = this.createKeypointMap(keypoints);
 
     // Calculate and draw circle for left hand
-    this.drawCircleForHand(leftHandPoints, keypointMap);
+    const left = this.drawCircleForHand('left', leftHandPoints, keypointMap);
 
     // Calculate and draw circle for right hand
-    this.drawCircleForHand(rightHandPoints, keypointMap);
+    const right = this.drawCircleForHand('right', rightHandPoints, keypointMap);
+
+    if (left) {
+      this.poseState.moveHand(left);
+    }
+
+    if (right) {
+      this.poseState.moveHand(right);
+    }
   }
 
   // Helper to calculate the center of hand points and draw a circle
   private drawCircleForHand(
+    name: string,
     handKeypoints: string[],
     keypointMap: { [key: string]: Keypoint }
-  ) {
+  ): Hand | undefined {
     const validKeypoints = handKeypoints
       .map((part) => keypointMap[part])
       .filter((kp) => kp && kp.score! > 0.5);
@@ -252,7 +267,11 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
       this.ctx.strokeStyle = 'blue'; // Optional: color specific to hands
       this.ctx.lineWidth = 3;
       this.ctx.stroke();
+
+      return <Hand>{ name: name, x: center.x, y: center.y, radius: 20 };
     }
+
+    return undefined;
   }
 
   // Helper to calculate the center of a set of keypoints
