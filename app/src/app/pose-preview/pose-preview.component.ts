@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PoseDetectorService } from '../pose-detector.service';
+import { PoseDetectorService } from '../pose-detector/pose-detector.service';
 import { Pose } from '@tensorflow-models/pose-detection';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -41,8 +41,7 @@ export class PosePreviewComponent implements OnInit {
   }
 
   startPreview() {
-    // uses 3 FPS
-    this.refresh.setup(3);
+    this.refresh.setup(20);
     this.refresh.render.subscribe(() => {
       this.previewPose();
     });
