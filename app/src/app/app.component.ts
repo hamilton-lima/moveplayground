@@ -7,6 +7,7 @@ import { PosePreviewComponent } from './pose-preview/pose-preview.component';
 import { Subject } from 'rxjs';
 import { NotificationComponent } from './notification/notification.component';
 import { GreenBalloonGameComponent } from './green-balloon-game/green-balloon-game.component';
+import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { GreenBalloonGameComponent } from './green-balloon-game/green-balloon-ga
     PosePreviewComponent,
     NotificationComponent,
     GreenBalloonGameComponent,
+    FooterComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
