@@ -1,5 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { PreviewRefreshHelper } from '../preview-refresh.helper';
+import {
+  CurrentPoseStateService,
+  Hand,
+} from '../pose-detector/current-pose-state.service';
 
 class Balloon {
   id: string = '';
@@ -39,7 +43,7 @@ export class GreenBalloonGameComponent implements OnInit {
   private refresh: PreviewRefreshHelper;
   possiblePositions: { x: number; y: number }[] = [];
 
-  constructor() {
+  constructor(private poseState: CurrentPoseStateService) {
     this.refresh = PreviewRefreshHelper.getInstance();
   }
 
@@ -48,6 +52,23 @@ export class GreenBalloonGameComponent implements OnInit {
     this.calculateLines();
     this.possiblePositions = this.calculatePossiblePositions(5);
     this.start();
+
+    this.poseState.handDetected.subscribe((hand: Hand) => {
+      this.didHandPopBalloon(hand);
+    });
+  }
+
+  didHandPopBalloon(hand: Hand) {
+    console.log('hand move', hand);
+
+    this.balloons.forEach((balloon) => {
+      const dist = Math.sqrt(
+        (hand.x - balloon.x) ** 2 + (hand.y - balloon.y) ** 2
+      );
+      if (dist < balloon.radius) {
+        this.popBalloon(balloon, `hand-${hand.name}`);
+      }
+    });
   }
 
   calculateLines() {
@@ -189,7 +210,9 @@ export class GreenBalloonGameComponent implements OnInit {
     });
   }
 
-  popBalloon(balloon: Balloon) {
+  popBalloon(balloon: Balloon, source: string) {
+    console.log('balloon popped by', source);
+
     if (!balloon.popped) {
       balloon.popped = true;
       if (balloon.color === 'green') {
@@ -220,7 +243,7 @@ export class GreenBalloonGameComponent implements OnInit {
         (clickX - balloon.x) ** 2 + (clickY - balloon.y) ** 2
       );
       if (dist < balloon.radius) {
-        this.popBalloon(balloon);
+        this.popBalloon(balloon, 'mouse-click');
       }
     });
   }

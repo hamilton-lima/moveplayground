@@ -49,7 +49,7 @@ export class PoseDetectorService {
     const poses = await this.detector.estimatePoses(video, {
       maxPoses: 1,
       flipHorizontal: false,
-      scoreThreshold: 0.4,
+      scoreThreshold: 0.5,
     });
 
     return poses;
