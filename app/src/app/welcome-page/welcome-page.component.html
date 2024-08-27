@@ -12,8 +12,8 @@
         To start, you'll need to allow camera access. Click on START and follow the prompt,
         click "Allow," and you're good to go!
       </p>
-      <button class="button" (click)="askCameraAccess()">START</button>
-      <button class="button" (click)="balloonsGame()">Go to game</button>
+      <button class="button is-large is-primary" (click)="askCameraAccess()">START</button>
+      <button *ngIf="ready" class="button is-large is-primary" (click)="balloonsGame()">Go to game</button>
     </div>
   </div>
 </section>
