@@ -1,50 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { VideoPreviewComponent } from './video-preview/video-preview.component';
-import { VideoSourceSelectorComponent } from './video-source-selector/video-source-selector.component';
-import { AppStateService } from './app-state.service';
-import { PosePreviewComponent } from './pose-preview/pose-preview.component';
-import { Subject } from 'rxjs';
-import { NotificationComponent } from './notification/notification.component';
-import { GreenBalloonGameComponent } from './green-balloon-game/green-balloon-game.component';
-import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    VideoPreviewComponent,
-    VideoSourceSelectorComponent,
-    PosePreviewComponent,
-    NotificationComponent,
-    GreenBalloonGameComponent,
-    FooterComponent,
-  ],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements AfterViewInit {
-  selectedCameraID: string | null = null;
-  video: Subject<HTMLVideoElement> = new Subject();
-
-  constructor(
-    private appStateService: AppStateService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  ngAfterViewInit(): void {
-    this.selectedCameraID = this.appStateService.getSelectedCamera();
-    this.cdr.detectChanges();
-  }
-
-  onCameraSelected(selectedCameraID: string) {
-    this.selectedCameraID = selectedCameraID;
-    this.appStateService.saveSelectedCamera(selectedCameraID);
-  }
-
-  onVideoReady(video: HTMLVideoElement) {
-    console.log('video updated', video);
-    this.video.next(video);
-  }
-}
+export class AppComponent {}
