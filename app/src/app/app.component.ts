@@ -24,27 +24,4 @@ import { FooterComponent } from './footer/footer.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements AfterViewInit {
-  selectedCameraID: string | null = null;
-  video: Subject<HTMLVideoElement> = new Subject();
-
-  constructor(
-    private appStateService: AppStateService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  ngAfterViewInit(): void {
-    this.selectedCameraID = this.appStateService.getSelectedCamera();
-    this.cdr.detectChanges();
-  }
-
-  onCameraSelected(selectedCameraID: string) {
-    this.selectedCameraID = selectedCameraID;
-    this.appStateService.saveSelectedCamera(selectedCameraID);
-  }
-
-  onVideoReady(video: HTMLVideoElement) {
-    console.log('video updated', video);
-    this.video.next(video);
-  }
-}
+export class AppComponent {}
