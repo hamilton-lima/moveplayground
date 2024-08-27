@@ -229,6 +229,10 @@ export class GreenBalloonGameComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   handleClick(event: MouseEvent) {
+    if (!this.canvas) {
+      console.warn('No canvas defined yet...');
+      return;
+    }
     // Get the bounding rectangle of the canvas
     const rect = this.canvas.getBoundingClientRect();
 
