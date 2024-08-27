@@ -1,13 +1,23 @@
 <section class="section">
   <div class="container">
-    <h1 class="title">MOVE PLAYGROUND</h1>
-    <div (click)="gotoGame()">
-      Go to game
+    <div class="content is-large">
+      <h1>MOVE PLAYGROUND</h1>
+      <p>Move, Play, Control</p>
+      <p>
+        In Move Playgrounds, your body is the controller. Your movements shape
+        the game in real-time. Ready to jump in?
+      </p>
+
+      <p>
+        To start, you'll need to allow camera access. Click on START and follow the prompt,
+        click "Allow," and you're good to go!
+      </p>
+      <button class="button" (click)="askCameraAccess()">START</button>
+      <button class="button" (click)="balloonsGame()">Go to game</button>
     </div>
-    </div>
+  </div>
 </section>
 
-<section class="section">
-</section>
+<section class="section"></section>
 
 <app-footer></app-footer>

@@ -13,7 +13,11 @@ import { FooterComponent } from '../footer/footer.component';
 export class WelcomePageComponent {
   constructor(private router: Router) {}
 
-  gotoGame() {
+  balloonsGame() {
     this.router.navigate(['/balloons']);
+  }
+
+  askCameraAccess() {
+    console.log('ask camera access');
   }
 }
