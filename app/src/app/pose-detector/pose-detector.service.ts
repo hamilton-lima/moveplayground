@@ -52,6 +52,24 @@ export class PoseDetectorService {
       scoreThreshold: 0.5,
     });
 
+    const result = this.flipPosesHorizontally(video, poses);
+    return result;
+  }
+
+  // TensorFlow pose detection is skipping flipHorizontal parameter, no changes if set to true
+  // Then a manual flip is required
+  // See https://github.com/tensorflow/tfjs/issues/8093
+  flipPosesHorizontally(video: HTMLVideoElement, poses: poseDetection.Pose[]) {
+    // Get the video width for manual flipping
+    const videoWidth = video.videoWidth;
+
+    // Flip all poses manually
+    poses.forEach((pose) => {
+      pose.keypoints.forEach((keypoint) => {
+        keypoint.x = videoWidth - keypoint.x;
+      });
+    });
+
     return poses;
   }
 }
