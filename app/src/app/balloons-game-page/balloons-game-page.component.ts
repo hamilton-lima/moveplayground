@@ -27,6 +27,9 @@ import { VideoSourceSelectorComponent } from '../video-source-selector/video-sou
 export class BalloonsGamePageComponent implements AfterViewInit {
   selectedCameraID: string | null = null;
   video: Subject<HTMLVideoElement> = new Subject();
+  time2Show = '';
+  redCounter = 0;
+  greenCounter = 0;
 
   constructor(
     private appStateService: AppStateService,
@@ -37,6 +40,21 @@ export class BalloonsGamePageComponent implements AfterViewInit {
     this.selectedCameraID = this.appStateService.getSelectedCamera();
     this.cdr.detectChanges();
   }
+
+  onRedBalloon() {
+    this.redCounter++;
+  }
+
+  onGreenBalloon() {
+    this.greenCounter++;
+  }
+
+  onTimeUpdate(currentTime: number) {
+    const seconds = Math.floor(currentTime / 1000);
+    this.time2Show = `Time: ${seconds} seconds`;
+  }
+
+  class = 'green-balloon';
 
   onCameraSelected(selectedCameraID: string) {
     this.selectedCameraID = selectedCameraID;

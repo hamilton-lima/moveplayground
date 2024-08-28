@@ -1,4 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { PreviewRefreshHelper } from '../preview-refresh.helper';
 import {
   CurrentPoseStateService,
@@ -34,8 +40,10 @@ export class GreenBalloonGameComponent implements OnInit {
   lines: number[] = [];
   currentLine = this.MAX_LINES - 1;
 
-  greenCount = 0;
-  redCount = 0;
+  @Output() green = new EventEmitter<void>();
+  @Output() red = new EventEmitter<void>();
+  // miliseconds
+  @Output() time = new EventEmitter<number>();
 
   totalGameTime = 300000; // 5 minutes in milliseconds
   currentTime = 0; // Timer for each round (60 seconds)
@@ -107,7 +115,7 @@ export class GreenBalloonGameComponent implements OnInit {
     this.keepMinimumAmountOfBalloons();
     this.drawPossiblePositions(this.possiblePositions);
     this.drawAllBalloons();
-    this.drawTimer();
+    this.time.emit(this.currentTime);
   }
 
   keepMinimumAmountOfBalloons() {
@@ -121,14 +129,6 @@ export class GreenBalloonGameComponent implements OnInit {
 
   clearScreen() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
-
-  drawTimer() {
-    const seconds = Math.floor(this.currentTime / 1000);
-    // Draw timer
-    this.ctx.fillStyle = '#000';
-    this.ctx.font = '20px Arial';
-    this.ctx.fillText(`Time: ${seconds} seconds`, 10, 20);
   }
 
   drawAllBalloons() {
@@ -216,9 +216,9 @@ export class GreenBalloonGameComponent implements OnInit {
     if (!balloon.popped) {
       balloon.popped = true;
       if (balloon.color === 'green') {
-        this.greenCount++;
+        this.green.emit();
       } else {
-        this.redCount++;
+        this.red.emit();
       }
 
       this.balloons = this.balloons.filter((one) => {
