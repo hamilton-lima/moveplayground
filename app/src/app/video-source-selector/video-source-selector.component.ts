@@ -21,6 +21,12 @@ export class VideoSourceSelectorComponent implements OnInit {
       // Get available video input devices (cameras)
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.cameras = devices.filter((device) => device.kind === 'videoinput');
+
+      if (!this.selectedCameraID) {
+        console.log('No camera selected, preselecting first camera from list');
+        this.selectCamera(this.cameras[0].deviceId);
+      }
+
     } catch (err) {
       const message = 'Not able to initialize video element';
       this.notification.warning(message);
