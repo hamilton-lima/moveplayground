@@ -43,15 +43,18 @@ export class BalloonsGamePageComponent implements AfterViewInit {
 
   onRedBalloon() {
     this.redCounter++;
+    this.cdr.detectChanges();
   }
 
   onGreenBalloon() {
     this.greenCounter++;
+    this.cdr.detectChanges();
   }
 
   onTimeUpdate(currentTime: number) {
     const seconds = Math.floor(currentTime / 1000);
     this.time2Show = `Time: ${seconds} seconds`;
+    this.cdr.detectChanges();
   }
 
   class = 'green-balloon';

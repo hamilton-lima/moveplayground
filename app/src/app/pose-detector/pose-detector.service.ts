@@ -2,12 +2,43 @@ import { Injectable } from '@angular/core';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
+import { Subject } from 'rxjs';
+
+export class PerformanceTracker {
+  average: Subject<number> = new Subject();
+  events: number[] = [];
+  start: number = 0;
+  seconds2Track: number;
+  milisecs2Track: number;
+
+  constructor(secondsToTrack: number) {
+    this.seconds2Track = secondsToTrack;
+    this.milisecs2Track = secondsToTrack * 1000;
+  }
+
+  track(measure: number) {
+    this.events.push(measure);
+
+    if (this.start == 0) {
+      this.start = performance.now();
+    }
+
+    if (performance.now() - this.start > this.milisecs2Track) {
+      const sum = this.events.reduce((total, num) => total + num, 0);
+      const average = sum / this.events.length;
+      this.average.next(average);
+      this.events = [];
+      this.start = performance.now();
+    }
+  }
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class PoseDetectorService {
   private detector: poseDetection.PoseDetector | null = null;
+  private tracker: PerformanceTracker = new PerformanceTracker(10);
 
   constructor() {}
   isReady(): boolean {
@@ -15,6 +46,14 @@ export class PoseDetectorService {
       return true;
     }
     return false;
+  }
+
+  async buildMoveNetPoseDetector() {
+    const model = poseDetection.SupportedModels.MoveNet;
+    const detector = await poseDetection.createDetector(model, {
+      modelType: 'MultiPose.Lightning',
+    } as poseDetection.MoveNetModelConfig);
+    return detector;
   }
 
   // Initialize TensorFlow and pose detection
@@ -26,14 +65,15 @@ export class PoseDetectorService {
 
     if (!this.detector) {
       console.log('No Pose detector saved, will create one');
-      const model = poseDetection.SupportedModels.BlazePose;
-      this.detector = await poseDetection.createDetector(model, {
-        runtime: 'tfjs',
-        modelType: 'lite',
-        maxPoses: 1,
-      } as poseDetection.BlazePoseTfjsModelConfig);
+      this.detector = await this.buildMoveNetPoseDetector();
       console.log('Pose detector created', this.detector);
     }
+
+    this.tracker.average.subscribe((average) => {
+      console.log(
+        `Average time to detect pose in the last ${this.tracker.seconds2Track} seconds: ${average}ms`
+      );
+    });
 
     return this.detector;
   }
@@ -46,6 +86,7 @@ export class PoseDetectorService {
       );
     }
 
+    const start = performance.now();
     const poses = await this.detector.estimatePoses(video, {
       maxPoses: 1,
       flipHorizontal: false,
@@ -53,6 +94,11 @@ export class PoseDetectorService {
     });
 
     const result = this.flipPosesHorizontally(video, poses);
+
+    // track elapsed time
+    const end = performance.now();
+    this.tracker.track(end - start);
+
     return result;
   }
 
