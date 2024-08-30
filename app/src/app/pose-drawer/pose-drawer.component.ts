@@ -15,10 +15,8 @@ import { estimateHandPosition } from './hand.estimate.function';
 
 const headKeypoints = [
   'nose',
-  'left_eye_inner',
-  'left_eye_outer',
-  'right_eye_inner',
-  'right_eye_outer',
+  'left_eye',
+  'right_eye',
   'left_ear',
   'right_ear',
 ];
@@ -106,31 +104,14 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
   private drawPose(): void {
     if (!this.poses || this.poses.length === 0) return;
 
+    console.log('poses', this.poses);
+
     this.poses.forEach((pose) => {
       const keypoints = pose.keypoints;
       keypoints.forEach((keypoint: Keypoint) => {
-        // Skip hand connections
+        // Skip hand connections, and facial points
         if (
-          [
-            'left_wrist',
-            'left_thumb',
-            'left_index',
-            'left_pinky',
-            'right_wrist',
-            'right_thumb',
-            'right_index',
-            'right_pinky',
-          ].includes(keypoint.name!) ||
-          [
-            'left_wrist',
-            'left_thumb',
-            'left_index',
-            'left_pinky',
-            'right_wrist',
-            'right_thumb',
-            'right_index',
-            'right_pinky',
-          ].includes(keypoint.name!) ||
+          ['left_wrist', 'right_wrist'].includes(keypoint.name!) ||
           headKeypoints.includes(keypoint.name!)
         ) {
           return;
@@ -180,7 +161,7 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
         this.ctx.moveTo(kp1.x, kp1.y);
         this.ctx.lineTo(kp2.x, kp2.y);
         this.ctx.strokeStyle = 'white';
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = 3;
         this.ctx.stroke();
       }
     });
@@ -253,7 +234,7 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
     const start = keypointMap[foreArmStartKeypoint];
     const end = keypointMap[foreArmEndKeypoint];
 
-    if (start && end) {
+    if (start && end && start.score! > 0.5 && end.score! > 0.5) {
       const center = estimateHandPosition(start, end);
 
       this.ctx.beginPath();
