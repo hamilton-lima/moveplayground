@@ -39,6 +39,8 @@ export class PerformanceTracker {
 export class PoseDetectorService {
   private detector: poseDetection.PoseDetector | null = null;
   private tracker: PerformanceTracker = new PerformanceTracker(10);
+  private model: poseDetection.SupportedModels =
+    poseDetection.SupportedModels.MoveNet;
 
   constructor() {}
   isReady(): boolean {
@@ -46,6 +48,38 @@ export class PoseDetectorService {
       return true;
     }
     return false;
+  }
+
+  async buildBlazePoseDetector() {
+    const model = poseDetection.SupportedModels.BlazePose;
+    const detector = await poseDetection.createDetector(model, {
+      runtime: 'tfjs',
+      modelType: 'lite',
+      maxPoses: 1,
+    } as poseDetection.BlazePoseTfjsModelConfig);
+    return detector;
+  }
+
+  // Explore model type to allow multiple poses
+  async buildMoveNetPoseDetector() {
+    const model = poseDetection.SupportedModels.MoveNet;
+    const detector = await poseDetection.createDetector(
+      model,
+      {} as poseDetection.MoveNetModelConfig
+    );
+    return detector;
+  }
+
+  buildDetectorFactory(): Promise<poseDetection.PoseDetector> {
+    if (this.model == poseDetection.SupportedModels.BlazePose) {
+      return this.buildBlazePoseDetector();
+    }
+
+    if (this.model == poseDetection.SupportedModels.MoveNet) {
+      return this.buildMoveNetPoseDetector();
+    }
+
+    throw new Error('No model selected to generate the pose detector');
   }
 
   // Initialize TensorFlow and pose detection
@@ -57,12 +91,7 @@ export class PoseDetectorService {
 
     if (!this.detector) {
       console.log('No Pose detector saved, will create one');
-      const model = poseDetection.SupportedModels.BlazePose;
-      this.detector = await poseDetection.createDetector(model, {
-        runtime: 'tfjs',
-        modelType: 'lite',
-        maxPoses: 1,
-      } as poseDetection.BlazePoseTfjsModelConfig);
+      this.detector = await this.buildDetectorFactory();
       console.log('Pose detector created', this.detector);
     }
 
