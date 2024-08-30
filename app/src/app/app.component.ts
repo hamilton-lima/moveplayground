@@ -20,7 +20,6 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private mixpanelService: EventsServiceService,
     private events: EventsServiceService,
     private activatedRoute: ActivatedRoute
   ) {}
@@ -31,7 +30,7 @@ export class AppComponent {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         // Send a Mixpanel event for the page view
-        this.mixpanelService.track('page.viewed', {
+        this.events.track('page.viewed', {
           page: event.urlAfterRedirects,
         });
       });
