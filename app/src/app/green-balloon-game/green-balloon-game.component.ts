@@ -110,11 +110,23 @@ export class GreenBalloonGameComponent implements OnInit {
 
   udpate() {
     this.clearScreen();
+    this.removeOldRedBalloons()
     this.keepMinimumAmountOfBalloons();
     this.drawPossiblePositions(this.possiblePositions);
     this.drawAllBalloons();
     this.time.emit(this.currentTime);
   }
+
+
+removeOldRedBalloons() {
+  const currentTime = performance.now();
+  this.balloons = this.balloons.filter((balloon) => {
+    if (balloon.color === 'red' && currentTime - balloon.creationTime > 5000) {
+      return false; // Remove the balloon if it's red and older than 5 seconds
+    }
+    return true;
+  });
+}
 
   keepMinimumAmountOfBalloons() {
     const missing = this.MIN_BALLOONS - this.balloons.length;
