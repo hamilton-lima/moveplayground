@@ -11,17 +11,12 @@ import {
   CurrentPoseStateService,
   Hand,
 } from '../pose-detector/current-pose-state.service';
-
-// draw
-// 'left_eye',
-// 'right_eye',
+import { estimateHandPosition } from './hand.estimate.function';
 
 const headKeypoints = [
   'nose',
-  'left_eye_inner',
-  'left_eye_outer',
-  'right_eye_inner',
-  'right_eye_outer',
+  'left_eye',
+  'right_eye',
   'left_ear',
   'right_ear',
 ];
@@ -109,31 +104,14 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
   private drawPose(): void {
     if (!this.poses || this.poses.length === 0) return;
 
+    console.log('poses', this.poses);
+
     this.poses.forEach((pose) => {
       const keypoints = pose.keypoints;
       keypoints.forEach((keypoint: Keypoint) => {
-        // Skip hand connections
+        // Skip hand connections, and facial points
         if (
-          [
-            'left_wrist',
-            'left_thumb',
-            'left_index',
-            'left_pinky',
-            'right_wrist',
-            'right_thumb',
-            'right_index',
-            'right_pinky',
-          ].includes(keypoint.name!) ||
-          [
-            'left_wrist',
-            'left_thumb',
-            'left_index',
-            'left_pinky',
-            'right_wrist',
-            'right_thumb',
-            'right_index',
-            'right_pinky',
-          ].includes(keypoint.name!) ||
+          ['left_wrist', 'right_wrist'].includes(keypoint.name!) ||
           headKeypoints.includes(keypoint.name!)
         ) {
           return;
@@ -183,7 +161,7 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
         this.ctx.moveTo(kp1.x, kp1.y);
         this.ctx.lineTo(kp2.x, kp2.y);
         this.ctx.strokeStyle = 'white';
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = 3;
         this.ctx.stroke();
       }
     });
@@ -219,26 +197,23 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
 
   // New function to draw circles around the center of the hand points
   private drawHandCirclesAroundCenter(keypoints: Keypoint[]) {
-    const leftHandPoints = [
-      'left_wrist',
-      'left_thumb',
-      'left_index',
-      'left_pinky',
-    ];
-    const rightHandPoints = [
-      'right_wrist',
-      'right_thumb',
-      'right_index',
-      'right_pinky',
-    ];
-
     const keypointMap = this.createKeypointMap(keypoints);
 
     // Calculate and draw circle for left hand
-    const left = this.drawCircleForHand('left', leftHandPoints, keypointMap);
+    const left = this.drawCircleForHand(
+      'left',
+      'left_elbow',
+      'left_wrist',
+      keypointMap
+    );
 
     // Calculate and draw circle for right hand
-    const right = this.drawCircleForHand('right', rightHandPoints, keypointMap);
+    const right = this.drawCircleForHand(
+      'right',
+      'right_elbow',
+      'right_wrist',
+      keypointMap
+    );
 
     if (left) {
       this.poseState.moveHand(left);
@@ -252,15 +227,15 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
   // Helper to calculate the center of hand points and draw a circle
   private drawCircleForHand(
     name: string,
-    handKeypoints: string[],
+    foreArmStartKeypoint: string,
+    foreArmEndKeypoint: string,
     keypointMap: { [key: string]: Keypoint }
   ): Hand | undefined {
-    const validKeypoints = handKeypoints
-      .map((part) => keypointMap[part])
-      .filter((kp) => kp && kp.score! > 0.5);
+    const start = keypointMap[foreArmStartKeypoint];
+    const end = keypointMap[foreArmEndKeypoint];
 
-    if (validKeypoints.length > 0) {
-      const center = this.calculateCenter(validKeypoints);
+    if (start && end && start.score! > 0.5 && end.score! > 0.5) {
+      const center = estimateHandPosition(start, end);
 
       this.ctx.beginPath();
       this.ctx.arc(center.x, center.y, 20, 0, 2 * Math.PI); // Draw a circle around the center
