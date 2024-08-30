@@ -67,8 +67,6 @@ export class GreenBalloonGameComponent implements OnInit {
   }
 
   didHandPopBalloon(hand: Hand) {
-    console.log('hand move', hand);
-
     this.balloons.forEach((balloon) => {
       const dist = Math.sqrt(
         (hand.x - balloon.x) ** 2 + (hand.y - balloon.y) ** 2

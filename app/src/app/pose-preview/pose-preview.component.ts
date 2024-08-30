@@ -53,7 +53,6 @@ export class PosePreviewComponent implements OnInit {
 
     if (this.videoElement && this.poseDectectorService.isReady()) {
       this.poses = await this.poseDectectorService.detect(this.videoElement);
-      console.log('detect pose', this.poses.length);
     }
   }
 
