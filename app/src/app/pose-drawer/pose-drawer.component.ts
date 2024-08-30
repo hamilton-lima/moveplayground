@@ -11,10 +11,7 @@ import {
   CurrentPoseStateService,
   Hand,
 } from '../pose-detector/current-pose-state.service';
-
-// draw
-// 'left_eye',
-// 'right_eye',
+import { estimateHandPosition } from './hand.estimate.function';
 
 const headKeypoints = [
   'nose',
@@ -219,26 +216,23 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
 
   // New function to draw circles around the center of the hand points
   private drawHandCirclesAroundCenter(keypoints: Keypoint[]) {
-    const leftHandPoints = [
-      'left_wrist',
-      'left_thumb',
-      'left_index',
-      'left_pinky',
-    ];
-    const rightHandPoints = [
-      'right_wrist',
-      'right_thumb',
-      'right_index',
-      'right_pinky',
-    ];
-
     const keypointMap = this.createKeypointMap(keypoints);
 
     // Calculate and draw circle for left hand
-    const left = this.drawCircleForHand('left', leftHandPoints, keypointMap);
+    const left = this.drawCircleForHand(
+      'left',
+      'left_elbow',
+      'left_wrist',
+      keypointMap
+    );
 
     // Calculate and draw circle for right hand
-    const right = this.drawCircleForHand('right', rightHandPoints, keypointMap);
+    const right = this.drawCircleForHand(
+      'right',
+      'right_elbow',
+      'right_wrist',
+      keypointMap
+    );
 
     if (left) {
       this.poseState.moveHand(left);
@@ -252,15 +246,15 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
   // Helper to calculate the center of hand points and draw a circle
   private drawCircleForHand(
     name: string,
-    handKeypoints: string[],
+    foreArmStartKeypoint: string,
+    foreArmEndKeypoint: string,
     keypointMap: { [key: string]: Keypoint }
   ): Hand | undefined {
-    const validKeypoints = handKeypoints
-      .map((part) => keypointMap[part])
-      .filter((kp) => kp && kp.score! > 0.5);
+    const start = keypointMap[foreArmStartKeypoint];
+    const end = keypointMap[foreArmEndKeypoint];
 
-    if (validKeypoints.length > 0) {
-      const center = this.calculateCenter(validKeypoints);
+    if (start && end) {
+      const center = estimateHandPosition(start, end);
 
       this.ctx.beginPath();
       this.ctx.arc(center.x, center.y, 20, 0, 2 * Math.PI); // Draw a circle around the center
