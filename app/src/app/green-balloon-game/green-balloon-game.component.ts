@@ -99,7 +99,7 @@ export class GreenBalloonGameComponent implements OnInit {
   }
 
   start() {
-    this.refresh.setup(1);
+    this.refresh.setup(20);
     this.refresh.render.subscribe((elapsed: number) => {
       this.updateTimer(elapsed);
       this.udpate();

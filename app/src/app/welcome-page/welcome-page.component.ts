@@ -29,7 +29,7 @@ export class WelcomePageComponent {
     this.started = true;
     console.log('ask camera access');
     try {
-      // Create a race between the 5 seconds timer and the getVideoAccess
+      // Create a race between the 3 seconds timer and the getVideoAccess
       await firstValueFrom(
         forkJoin({
           videoAccess: this.getVideoAccess(), // Assuming getVideoAccess returns a Promise or Observable
