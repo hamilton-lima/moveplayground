@@ -3,6 +3,7 @@ import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
 import { Subject } from 'rxjs';
+import { EventsServiceService } from '../events-service.service';
 
 export class PerformanceTracker {
   average: Subject<number> = new Subject();
@@ -38,9 +39,11 @@ export class PerformanceTracker {
 })
 export class PoseDetectorService {
   private detector: poseDetection.PoseDetector | null = null;
-  private tracker: PerformanceTracker = new PerformanceTracker(10);
+  private tracker: PerformanceTracker = new PerformanceTracker(180);
+  private modelName4Event = 'MoveNet.MultiPose.Lightning';
 
-  constructor() {}
+  constructor(private events: EventsServiceService) {}
+
   isReady(): boolean {
     if (this.detector) {
       return true;
@@ -58,21 +61,34 @@ export class PoseDetectorService {
 
   // Initialize TensorFlow and pose detection
   async initPoseDetection(): Promise<poseDetection.PoseDetector> {
-    console.log('PoseDetection init');
-    // Wait for TensorFlow to be ready
+    this.events.track('pose.detection.init', { step: 0, name: 'start' });
     await tf.ready();
-    console.log('Tensorflow is ready');
+    this.events.track('pose.detection.init', {
+      step: 1,
+      name: 'tensorflow.ready',
+      tensorflowBackend: tf.getBackend(),
+    });
 
     if (!this.detector) {
-      console.log('No Pose detector saved, will create one');
+      this.events.track('pose.detection.init', {
+        step: 2,
+        name: 'no.detector.found',
+      });
       this.detector = await this.buildMoveNetPoseDetector();
-      console.log('Pose detector created', this.detector);
+      this.events.track('pose.detection.init', {
+        step: 3,
+        model: this.modelName4Event,
+        name: 'detector.created',
+      });
     }
 
     this.tracker.average.subscribe((average) => {
-      console.log(
-        `Average time to detect pose in the last ${this.tracker.seconds2Track} seconds: ${average}ms`
-      );
+      this.events.track('pose.detection.stats', {
+        seconds: this.tracker.seconds2Track,
+        average: average,
+        model: this.modelName4Event,
+        tensorflowBackend: tf.getBackend(),
+      });
     });
 
     return this.detector;
@@ -81,6 +97,10 @@ export class PoseDetectorService {
   // Perform pose detection
   async detect(video: HTMLVideoElement): Promise<poseDetection.Pose[]> {
     if (!this.detector) {
+      this.events.track('error', {
+        name: 'no.pose.detector.found',
+      });
+
       throw new Error(
         'Pose detector is not initialized. Call initPoseDetection() first.'
       );
