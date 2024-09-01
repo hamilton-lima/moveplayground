@@ -104,8 +104,6 @@ export class PoseDrawerComponent implements AfterViewInit, OnChanges {
   private drawPose(): void {
     if (!this.poses || this.poses.length === 0) return;
 
-    console.log('poses', this.poses);
-
     this.poses.forEach((pose) => {
       const keypoints = pose.keypoints;
       keypoints.forEach((keypoint: Keypoint) => {
