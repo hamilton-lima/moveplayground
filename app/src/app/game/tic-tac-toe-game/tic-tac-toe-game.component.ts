@@ -24,7 +24,7 @@ export class TicTacToeGameComponent implements OnInit {
     this.sessionID = this.route.snapshot.paramMap.get('sessionID');
     if (!this.sessionID) {
       // If sessionID is not available, navigate to a not found page
-      this.router.navigate(['/not-found']);
+      this.router.navigate(['/play/error']);
       return;
     }
 
@@ -37,7 +37,7 @@ export class TicTacToeGameComponent implements OnInit {
 
     if (!session) {
       // If the session is not valid, navigate to a not found page
-      this.router.navigate(['/not-found']);
+      this.router.navigate(['/play/error/invalid-session-id', this.sessionID]);
       return;
     }
 
