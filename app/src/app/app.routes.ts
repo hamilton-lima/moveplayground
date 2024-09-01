@@ -2,9 +2,11 @@ import { Routes } from '@angular/router';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { BalloonsGamePageComponent } from './balloons-game-page/balloons-game-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { GameLobbyComponent } from './game-lobby/game-lobby.component';
 
 export const routes: Routes = [
   { path: '', component: WelcomePageComponent }, // Default route
   { path: 'balloons', component: BalloonsGamePageComponent }, // /balloons route
+  { path: 'lobby', component: GameLobbyComponent },
   { path: '**', component: NotFoundPageComponent }, // /balloons route
 ];
