@@ -67,30 +67,6 @@ export class TicTacToeGameRenderComponent implements OnInit {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  drawBoard() {
-    const width = this.canvas.width;
-    const height = this.canvas.height;
-    const thirdWidth = width / 3;
-    const thirdHeight = height / 3;
-
-    // Draw vertical lines
-    this.ctx.beginPath();
-    this.ctx.moveTo(thirdWidth, 0);
-    this.ctx.lineTo(thirdWidth, height);
-    this.ctx.moveTo(2 * thirdWidth, 0);
-    this.ctx.lineTo(2 * thirdWidth, height);
-
-    // Draw horizontal lines
-    this.ctx.moveTo(0, thirdHeight);
-    this.ctx.lineTo(width, thirdHeight);
-    this.ctx.moveTo(0, 2 * thirdHeight);
-    this.ctx.lineTo(width, 2 * thirdHeight);
-
-    this.ctx.strokeStyle = '#000000';
-    this.ctx.lineWidth = 2;
-    this.ctx.stroke();
-  }
-
   drawElements() {
     const thirdWidth = this.canvas.width / 3;
     const thirdHeight = this.canvas.height / 3;
@@ -117,11 +93,35 @@ export class TicTacToeGameRenderComponent implements OnInit {
     }
   }
 
+  drawBoard() {
+    const width = this.canvas.width;
+    const height = this.canvas.height;
+    const thirdWidth = width / 3;
+    const thirdHeight = height / 3;
+
+    // Draw vertical lines
+    this.ctx.beginPath();
+    this.ctx.moveTo(thirdWidth, 0);
+    this.ctx.lineTo(thirdWidth, height);
+    this.ctx.moveTo(2 * thirdWidth, 0);
+    this.ctx.lineTo(2 * thirdWidth, height);
+
+    // Draw horizontal lines
+    this.ctx.moveTo(0, thirdHeight);
+    this.ctx.lineTo(width, thirdHeight);
+    this.ctx.moveTo(0, 2 * thirdHeight);
+    this.ctx.lineTo(width, 2 * thirdHeight);
+
+    this.ctx.strokeStyle = '#00FFFF'; // Cyan color
+    this.ctx.lineWidth = 4;
+    this.ctx.stroke();
+  }
+
   drawCircle(x: number, y: number, radius: number) {
     this.ctx.beginPath();
     this.ctx.arc(x, y, radius, 0, Math.PI * 2);
-    this.ctx.strokeStyle = '#000000';
-    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = '#00FFFF'; // Cyan color
+    this.ctx.lineWidth = 4;
     this.ctx.stroke();
   }
 
@@ -131,8 +131,8 @@ export class TicTacToeGameRenderComponent implements OnInit {
     this.ctx.lineTo(x + size, y + size);
     this.ctx.moveTo(x + size, y - size);
     this.ctx.lineTo(x - size, y + size);
-    this.ctx.strokeStyle = '#000000';
-    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = '#00FFFF'; // Cyan color
+    this.ctx.lineWidth = 4;
     this.ctx.stroke();
   }
 }
