@@ -20,7 +20,6 @@ export class AppComponent {
   currentUserId: string | null = null;
 
   constructor(
-    private router: Router,
     private events: EventsService,
     private activatedRoute: ActivatedRoute,
     private pageNavigationTracking: TrackingService

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { DataStorageService } from '../data-storage.service';
 import { environment } from '../environments/environment';
+import { EventsService } from '../events.service';
 
 @Component({
   selector: 'app-game-lobby',
@@ -22,16 +23,28 @@ export class GameLobbyComponent implements OnInit {
   constructor(
     private data: DataStorageService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private events: EventsService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(async (params) => {
       const gameName = params.get('gameName');
       if (gameName) {
+        this.events.track('game.lobby', {
+          gameName: gameName,
+          step: 0,
+          name: 'start',
+        });
         await this.loadGameTypeDetails(gameName);
         await this.createSession();
         this.generateGameURL();
+        this.events.track('game.lobby', {
+          gameName: gameName,
+          step: 2,
+          name: 'end',
+          gameURL: this.gameURL,
+        });
       }
     });
   }
@@ -45,7 +58,13 @@ export class GameLobbyComponent implements OnInit {
     const preffix = environment.applicationLinkURLPreffix;
     const gameName = this.gameType.name;
     const id = this.gameSession.external_id;
-    console.log('gamesession', this.gameSession);
+    this.events.track('game.lobby', {
+      gameName: gameName,
+      step: 1,
+      name: 'generate-url',
+      preffix: preffix,
+      id: id,
+    });
 
     this.gameURL = `${preffix}/play/${gameName}/${id}`;
   }
