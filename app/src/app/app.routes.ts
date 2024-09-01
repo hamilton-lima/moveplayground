@@ -11,9 +11,9 @@ export const routes: Routes = [
   { path: '', component: WelcomePageComponent }, // Default route
   { path: 'balloons', component: BalloonsGamePageComponent }, // /balloons route
   { path: 'lobby/:gameName', component: GameLobbyComponent },
-  { path: 'play/tic-tac-toe/:sessionID', component: TicTacToeGameComponent },
+  { path: 'play/tic-tac-toe/:externalID', component: TicTacToeGameComponent },
   {
-    path: 'play/error/invalid-session-id/:sessionID',
+    path: 'play/error/invalid-session-id/:externalID',
     component: InvalidGameSessionPageComponent,
   },
   {

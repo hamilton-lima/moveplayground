@@ -36,7 +36,7 @@ import {
   styleUrls: ['./tic-tac-toe-game.component.scss'],
 })
 export class TicTacToeGameComponent implements OnInit, AfterViewInit {
-  sessionID: string | null = null;
+  externalID: string | null = null;
   gameSessionParticipation: any;
   selectedCameraID: string | null = null;
   video: Subject<HTMLVideoElement> = new Subject();
@@ -66,23 +66,23 @@ export class TicTacToeGameComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
-    this.sessionID = this.route.snapshot.paramMap.get('sessionID');
-    if (!this.sessionID) {
+    this.externalID = this.route.snapshot.paramMap.get('externalID');
+    if (!this.externalID) {
       // If sessionID is not available, navigate to a not found page
       this.router.navigate(['/play/error']);
       return;
     }
 
-    const session = this.service.findGameSession(this.sessionID);
+    const session = await this.service.findGameSession(this.externalID);
 
     if (!session) {
       // If the session is not valid, navigate to a not found page
-      this.router.navigate(['/play/error/invalid-session-id', this.sessionID]);
+      this.router.navigate(['/play/error/invalid-session-id', this.externalID]);
       return;
     }
 
-    this.gameSessionParticipation = this.service.createGameParticipation(
-      this.sessionID
+    this.gameSessionParticipation = await this.service.createGameParticipation(
+      session.id
     );
 
     this.symbol = await this.service.determineSymbol(

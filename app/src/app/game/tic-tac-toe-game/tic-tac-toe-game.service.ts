@@ -36,42 +36,40 @@ export class TicTacToeGameService {
       participant: participantID,
     };
 
-    try {
-      // Attempt to create a new participation record
-      const participation = await this.dataStorage.addOne(
-        'game_session_participation',
-        participationRecord
+    console.log('participationRecord', participationRecord);
+
+    // Attempt to create a new participation record
+    const participation = await this.dataStorage.addOne(
+      'game_session_participation',
+      participationRecord
+    );
+
+    if (participation) {
+      console.log('Participation record created successfully:', participation);
+      return participation;
+    } else {
+      return this.findGameParticipation(sessionID, participantID);
+    }
+  }
+
+  async findGameParticipation(sessionID: string, participantID: string) {
+    const existingParticipation = await this.dataStorage
+      .client()
+      .from('game_session_participation')
+      .select('*')
+      .eq('game_session', sessionID)
+      .eq('participant', participantID)
+      .single();
+
+    if (existingParticipation.data) {
+      console.log(
+        'Found existing participation record:',
+        existingParticipation.data
       );
-
-      if (participation) {
-        console.log(
-          'Participation record created successfully:',
-          participation
-        );
-        return participation;
-      } else {
-        throw new Error('Failed to create participation record');
-      }
-    } catch (error) {
-      // If there's an error, try to find the existing participation
-      const existingParticipation = await this.dataStorage
-        .client()
-        .from('game_session_participation')
-        .select('*')
-        .eq('game_session', sessionID)
-        .eq('participant', participantID)
-        .single();
-
-      if (existingParticipation.data) {
-        console.log(
-          'Found existing participation record:',
-          existingParticipation.data
-        );
-        return existingParticipation.data;
-      } else {
-        console.error('No existing participation record found.');
-        return null;
-      }
+      return existingParticipation.data;
+    } else {
+      console.error('No existing participation record found.');
+      return null;
     }
   }
 

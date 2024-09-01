@@ -15,7 +15,7 @@ export class InvalidGameSessionPageComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   async ngOnInit() {
-    this.sessionID = this.route.snapshot.paramMap.get('sessionID');
+    this.sessionID = this.route.snapshot.paramMap.get('externalID');
   }
 
   home() {

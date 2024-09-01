@@ -30,7 +30,7 @@ export class AppStateService {
   }
 
   // Retrieve the game participant ID from localStorage
-  getParticipantId(): string | null {
+  getParticipantId(): string {
     let result = localStorage.getItem(this.PARTICIPANT_ID_KEY);
     if (!result) {
       result = crypto.randomUUID();
