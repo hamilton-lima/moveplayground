@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { DataStorageService } from '../data-storage.service';
 import { environment } from '../environments/environment';
@@ -21,7 +21,8 @@ export class GameLobbyComponent implements OnInit {
 
   constructor(
     private data: DataStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -73,6 +74,6 @@ export class GameLobbyComponent implements OnInit {
   }
 
   play() {
-    console.log('play');
+    this.router.navigate(['/play/tic-tac-toe', this.gameSession.external_id]);
   }
 }
