@@ -14,6 +14,8 @@ import { DataStorageService } from '../data-storage.service';
 export class GameLobbyComponent implements OnInit {
   sessions: any[] = [];
   gameType: any;
+  gameSession: any;
+  title = 'Assembling the game parts...';
 
   constructor(
     private data: DataStorageService,
@@ -47,9 +49,8 @@ export class GameLobbyComponent implements OnInit {
       return;
     }
 
-    const gameSession = await this.data.add('game_session', {
+    this.gameSession = await this.data.add('game_session', {
       game_type: this.gameType.id,
     });
-    console.log('game session', gameSession);
   }
 }

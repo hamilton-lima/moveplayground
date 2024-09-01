@@ -1,23 +1,26 @@
 <section class="section">
   <div class="container">
     <div class="content is-large">
-      <h1>Game lobby</h1>
-      <p></p>
-      <p>You game is ready</p>
+      <h1>{{ title }}</h1>
+      <div id="ready-content" *ngIf="gameType">
+        <p>We are ready to play {{ gameType.label}}</p>
+        <button *ngIf="!gameSession" class="button is-large is-info" (click)="createSession()">
+          CREATE SESSION
+        </button>
+      </div>
+      <div id="session-ready" *ngIf="gameSession">
+        <p>gameSession created {{ gameSession | json }}</p>
 
-      <button
-        class="button is-large is-info"
-        (click)="createSession()"
-      >
-        CREATE SESSION
-      </button>
+        <button class="button is-large is-info" (click)="createSession()">
+          PLAY
+        </button>
+      </div>
     </div>
     <div class="content is-large">
-    <div *ngFor="let session of sessions">
+      <div *ngFor="let session of sessions">
         {{ session | json }}
+      </div>
     </div>
-    </div>
-
   </div>
 </section>
 
