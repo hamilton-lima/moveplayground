@@ -14,6 +14,7 @@ import { PosePreviewComponent } from '../../pose-preview/pose-preview.component'
 import { AppStateService } from '../../app-state.service';
 import { Subject } from 'rxjs';
 import { VideoPreviewComponent } from '../../video-preview/video-preview.component';
+import { TicTacToeGameRenderComponent } from './tic-tac-toe-game-render/tic-tac-toe-game-render.component';
 
 @Component({
   selector: 'app-tic-tac-toe-game',
@@ -25,6 +26,7 @@ import { VideoPreviewComponent } from '../../video-preview/video-preview.compone
     VideoSourceSelectorComponent,
     PosePreviewComponent,
     VideoPreviewComponent,
+    TicTacToeGameRenderComponent,
   ],
   templateUrl: './tic-tac-toe-game.component.html',
   styleUrls: ['./tic-tac-toe-game.component.scss'],

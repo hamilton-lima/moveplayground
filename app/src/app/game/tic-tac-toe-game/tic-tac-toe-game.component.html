@@ -17,7 +17,9 @@
       (videoReady)="onVideoReady($event)"
     ></app-video-preview>
     <app-pose-preview class="pose-preview" [video]="video"></app-pose-preview>
-    <div class="game"><!-- Add game here --></div>
+    <div class="game">
+      <app-tic-tac-toe-game-render></app-tic-tac-toe-game-render>
+    </div>
   </div>
 </section>
 
