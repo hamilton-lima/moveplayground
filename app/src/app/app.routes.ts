@@ -7,6 +7,6 @@ import { GameLobbyComponent } from './game-lobby/game-lobby.component';
 export const routes: Routes = [
   { path: '', component: WelcomePageComponent }, // Default route
   { path: 'balloons', component: BalloonsGamePageComponent }, // /balloons route
-  { path: 'lobby', component: GameLobbyComponent },
+  { path: 'lobby/:gameName', component: GameLobbyComponent },
   { path: '**', component: NotFoundPageComponent }, // /balloons route
 ];
