@@ -33,7 +33,8 @@ export class DataStorageService {
   async add(table: string, properties: object) {
     const { data, error } = await this.client()
       .from(table)
-      .insert([properties]);
+      .insert([properties])
+      .select();
 
     if (error) {
       console.error('Error inserting data:', error.message);
