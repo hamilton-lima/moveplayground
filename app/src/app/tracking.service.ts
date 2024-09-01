@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, Route } from '@angular/router';
-import { EventsServiceService } from './events-service.service';
+import { EventsService } from './events.service';
 import { filter } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { filter } from 'rxjs';
 })
 export class TrackingService {
   allRoutePaths: string[] = [];
-  constructor(private router: Router, private events: EventsServiceService) {}
+  constructor(private router: Router, private events: EventsService) {}
 
   initAutoTracking() {
     this.router.events

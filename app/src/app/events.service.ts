@@ -6,7 +6,7 @@ import { VERSION } from './version';
 @Injectable({
   providedIn: 'root',
 })
-export class EventsServiceService {
+export class EventsService {
   currentUserId: string | null = '';
   mixpanelService: any;
 

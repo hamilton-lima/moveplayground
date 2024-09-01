@@ -5,7 +5,7 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { EventsServiceService } from './events-service.service';
+import { EventsService } from './events.service';
 import { filter, take } from 'rxjs';
 import { TrackingService } from './tracking.service';
 
@@ -21,7 +21,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private events: EventsServiceService,
+    private events: EventsService,
     private activatedRoute: ActivatedRoute,
     private pageNavigationTracking: TrackingService
   ) {}
