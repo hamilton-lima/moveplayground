@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AppStateService {
   private readonly SELECTED_CAMERA_KEY = 'selectedCamera';
+  private readonly PARTICIPANT_ID_KEY = 'gameParticipantId';
 
   constructor() {}
 
@@ -21,5 +22,25 @@ export class AppStateService {
   // Clear the saved selected camera
   clearSelectedCamera(): void {
     localStorage.removeItem(this.SELECTED_CAMERA_KEY);
+  }
+
+  // Save the game participant ID to localStorage
+  saveParticipantId(participantId: string): void {
+    localStorage.setItem(this.PARTICIPANT_ID_KEY, participantId);
+  }
+
+  // Retrieve the game participant ID from localStorage
+  getParticipantId(): string {
+    let result = localStorage.getItem(this.PARTICIPANT_ID_KEY);
+    if (!result) {
+      result = crypto.randomUUID();
+      this.saveParticipantId(result);
+    }
+    return result;
+  }
+
+  // Clear the saved game participant ID
+  clearParticipantId(): void {
+    localStorage.removeItem(this.PARTICIPANT_ID_KEY);
   }
 }

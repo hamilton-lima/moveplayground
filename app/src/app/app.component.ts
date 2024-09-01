@@ -5,8 +5,9 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { EventsServiceService } from './events-service.service';
+import { EventsService } from './events.service';
 import { filter, take } from 'rxjs';
+import { TrackingService } from './tracking.service';
 
 @Component({
   selector: 'app-root',
@@ -19,32 +20,19 @@ export class AppComponent {
   currentUserId: string | null = null;
 
   constructor(
-    private router: Router,
-    private events: EventsServiceService,
-    private activatedRoute: ActivatedRoute
+    private events: EventsService,
+    private activatedRoute: ActivatedRoute,
+    private pageNavigationTracking: TrackingService
   ) {}
 
   ngOnInit(): void {
-    // Listen to router events
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        // Send a Mixpanel event for the page view
-        this.events.track('page.viewed', {
-          page: event.urlAfterRedirects,
-        });
-      });
+    this.pageNavigationTracking.initAutoTracking();
 
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        take(1) // Ensures that the identifyUser method is only called once
-      )
-      .subscribe((event: NavigationEnd) => {
-        // Extract the name parameter from the URL and pass it to identifyUser
-        const nameFromUrl = this.activatedRoute.snapshot.queryParams['name'];
-        this.identifyUser(nameFromUrl);
-      });
+    // Identify user only once on the first navigation
+    this.activatedRoute.queryParams.pipe(take(1)).subscribe((params) => {
+      const nameFromUrl = params['name'];
+      this.identifyUser(nameFromUrl);
+    });
   }
 
   private identifyUser(nameFromUrl: string | null): void {

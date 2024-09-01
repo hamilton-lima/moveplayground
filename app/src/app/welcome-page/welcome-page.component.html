@@ -31,13 +31,26 @@
         <p>{{ error }}</p>
       </div>
       <div *ngIf="ready" class="box content is-large">
-        <p>We found a camera in your browser, we are ready.</p>
+        <p>We found a camera in your browser, we are ready, what game you want to play?</p>
         <p>
-          <button class="button is-large is-primary" (click)="balloonsGame()">
-            LET'S MOVE!
+          <button class="button is-large is-primary big-buttons" (click)="balloonsGame()">
+            PICK THE GREEN BALLS
+          </button>
+          <button class="button is-large is-primary big-buttons" (click)="ticTacToeGame()">
+            TIC-TAC-TOE
           </button>
         </p>
       </div>
+
+      <div *ngIf="ready" class="box content is-large">
+        <p>TIC TAC TOE IS UNDER DEVELOPMENT, our current challenge is to define how to move your body to choose your move in the game. Ideas are welcome 😊</p>
+        <p>
+          <button class="button is-large is-primary big-buttons" (click)="ticTacToeGame()">
+            TIC-TAC-TOE
+          </button>
+        </p>
+      </div>
+
     </div>
   </div>
 </section>

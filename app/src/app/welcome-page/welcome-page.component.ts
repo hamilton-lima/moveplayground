@@ -24,6 +24,10 @@ export class WelcomePageComponent {
     this.router.navigate(['/balloons']);
   }
 
+  ticTacToeGame() {
+    this.router.navigate(['/lobby/tic-tac-toe']);
+  }
+
   async askCameraAccess() {
     this.checkIfMediaIsAvailable();
     this.started = true;

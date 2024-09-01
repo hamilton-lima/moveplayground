@@ -3,7 +3,7 @@ import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
 import { Subject } from 'rxjs';
-import { EventsServiceService } from '../events-service.service';
+import { EventsService } from '../events.service';
 
 export class PerformanceTracker {
   average: Subject<number> = new Subject();
@@ -42,7 +42,7 @@ export class PoseDetectorService {
   private tracker: PerformanceTracker = new PerformanceTracker(180);
   private modelName4Event = 'MoveNet.MultiPose.Lightning';
 
-  constructor(private events: EventsServiceService) {}
+  constructor(private events: EventsService) {}
 
   isReady(): boolean {
     if (this.detector) {
