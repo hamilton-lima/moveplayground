@@ -48,4 +48,22 @@ export class DataStorageService {
 
     return data;
   }
+
+  async findOne(table: string, value: string, field: string = 'id') {
+    const { data, error } = await this.client()
+      .from(table)
+      .select('*')
+      .eq(field, value)
+      .single(); // Ensure that only one record is returned
+
+    if (error) {
+      console.error(
+        `Error fetching ${table} with ${field} ${value}:`,
+        error.message
+      );
+      return null;
+    }
+
+    return data;
+  }
 }
