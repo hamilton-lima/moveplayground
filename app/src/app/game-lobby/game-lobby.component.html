@@ -1,25 +1,38 @@
 <section class="section">
   <div class="container">
     <div class="content is-large">
-      <h1>{{ title }}</h1>
-      <div id="ready-content" *ngIf="gameType">
-        <p>We are ready to play {{ gameType.label}}</p>
-        <button *ngIf="!gameSession" class="button is-large is-info" (click)="createSession()">
-          CREATE SESSION
-        </button>
-      </div>
-      <div id="session-ready" *ngIf="gameSession">
-        <p>gameSession created {{ gameSession | json }}</p>
+      <h1>Get in the Game: As Easy as 1-2-3!</h1>
 
-        <button class="button is-large is-info" (click)="createSession()">
-          PLAY
-        </button>
+      <div id="step1">
+        <p>
+          Step 1: Let's find your game. Loading details now...
+          <span *ngIf="gameType">✔️</span>
+        </p>
+      </div>
+
+      <div id="step2" *ngIf="gameType">
+        <p>
+          Step 2: Setting up your game session. Almost there...
+          <span *ngIf="gameSession">✔️</span>
+        </p>
+      </div>
+
+      <div id="step3" *ngIf="gameSession">
+        <p>
+          Step 3: Your game session is ready! Click the PLAY button below to
+          start playing, and be sure to share the link with the other player.
+          <span>✔️</span>
+        </p>
       </div>
     </div>
-    <div class="content is-large">
-      <div *ngFor="let session of sessions">
-        {{ session | json }}
-      </div>
+    <div class="box content is-large">
+      <button class="button is-large is-primary big-buttons" (click)="play()">
+        PLAY
+      </button>
+      <p class="mt-4">
+        Link to the game <br />
+        <a (click)="play()" class="is-link">{{ gameURL }}</a>
+      </p>
     </div>
   </div>
 </section>

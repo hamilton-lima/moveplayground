@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { DataStorageService } from '../data-storage.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-game-lobby',
@@ -15,6 +16,7 @@ export class GameLobbyComponent implements OnInit {
   sessions: any[] = [];
   gameType: any;
   gameSession: any;
+  gameURL: string = '';
   title = 'Assembling the game parts...';
 
   constructor(
@@ -27,8 +29,24 @@ export class GameLobbyComponent implements OnInit {
       const gameName = params.get('gameName');
       if (gameName) {
         await this.loadGameTypeDetails(gameName);
+        await this.createSession();
+        this.generateGameURL();
       }
     });
+  }
+
+  generateGameURL() {
+    if (!this.gameSession) {
+      console.error('No game session created');
+      return;
+    }
+
+    const preffix = environment.applicationLinkURLPreffix;
+    const gameName = this.gameType.name;
+    const id = this.gameSession.external_id;
+    console.log('gamesession', this.gameSession);
+
+    this.gameURL = `${preffix}/play/${gameName}/${id}`;
   }
 
   async loadGameTypeDetails(gameName: string) {
@@ -49,8 +67,12 @@ export class GameLobbyComponent implements OnInit {
       return;
     }
 
-    this.gameSession = await this.data.add('game_session', {
+    this.gameSession = await this.data.addOne('game_session', {
       game_type: this.gameType.id,
     });
+  }
+
+  play() {
+    console.log('play');
   }
 }

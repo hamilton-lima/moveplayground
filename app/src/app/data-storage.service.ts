@@ -30,7 +30,7 @@ export class DataStorageService {
     return data;
   }
 
-  async add(table: string, properties: object) {
+  async addOne(table: string, properties: object) {
     const { data, error } = await this.client()
       .from(table)
       .insert([properties])
@@ -41,6 +41,11 @@ export class DataStorageService {
     } else {
       console.log('Record added successfully:', data);
     }
+
+    if (data) {
+      return data[0];
+    }
+
     return data;
   }
 }
