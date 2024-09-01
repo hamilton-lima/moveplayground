@@ -1,2 +1,30 @@
-<p>tic-tac-toe-game works!</p>
-<p>{{gameSessionParticipantion|json}}</p>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Move your hand to play tic-tac-toe</h1>
+    <app-video-source-selector
+      [selectedCameraID]="selectedCameraID"
+      (cameraSelected)="onCameraSelected($event)"
+    ></app-video-source-selector>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container"></div>
+  <div class="container">
+    <app-video-preview
+      class="video-preview"
+      [selectedCameraID]="selectedCameraID"
+      (videoReady)="onVideoReady($event)"
+    ></app-video-preview>
+    <app-pose-preview class="pose-preview" [video]="video"></app-pose-preview>
+    <div class="game"><!-- Add game here --></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <app-notification></app-notification>
+  </div>
+</section>
+
+<app-footer></app-footer>

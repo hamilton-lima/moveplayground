@@ -1,24 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataStorageService } from '../../data-storage.service';
 import { CommonModule } from '@angular/common';
+import { FooterComponent } from '../../footer/footer.component';
+import { NotificationComponent } from '../../notification/notification.component';
+import { VideoSourceSelectorComponent } from '../../video-source-selector/video-source-selector.component';
+import { PosePreviewComponent } from '../../pose-preview/pose-preview.component';
+import { AppStateService } from '../../app-state.service';
 
 @Component({
   selector: 'app-tic-tac-toe-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FooterComponent,
+    NotificationComponent,
+    VideoSourceSelectorComponent,
+    PosePreviewComponent,
+  ],
   templateUrl: './tic-tac-toe-game.component.html',
   styleUrls: ['./tic-tac-toe-game.component.scss'],
 })
 export class TicTacToeGameComponent implements OnInit {
   sessionID: string | null = null;
   gameSessionParticipantion: any;
+  selectedCameraID: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataStorage: DataStorageService
+    private dataStorage: DataStorageService,
+    private appStateService: AppStateService,
+    private cdr: ChangeDetectorRef
   ) {}
+
+  ngAfterViewInit(): void {
+    this.selectedCameraID = this.appStateService.getSelectedCamera();
+    this.cdr.detectChanges();
+  }
+
+  onCameraSelected(selectedCameraID: string) {
+    this.selectedCameraID = selectedCameraID;
+    this.appStateService.saveSelectedCamera(selectedCameraID);
+  }
 
   async ngOnInit() {
     this.sessionID = this.route.snapshot.paramMap.get('sessionID');
