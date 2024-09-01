@@ -29,4 +29,17 @@ export class DataStorageService {
     }
     return data;
   }
+
+  async add(table: string, properties: object) {
+    const { data, error } = await this.client()
+      .from(table)
+      .insert([properties]);
+
+    if (error) {
+      console.error('Error inserting data:', error.message);
+    } else {
+      console.log('Record added successfully:', data);
+    }
+    return data;
+  }
 }

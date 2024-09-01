@@ -13,5 +13,17 @@ import { DataStorageService } from '../data-storage.service';
 export class GameLobbyComponent {
   sessions: any[] = [];
   constructor(private data: DataStorageService) {}
-  createSession() {}
+  async createSession() {
+    const gameTypes = await this.data.findAll('game_type');
+    const filtered = gameTypes.filter((game) => {
+      return game.name === 'tic-tac-toe';
+    });
+
+    const ticTacToe = filtered[0];
+    console.log('tic-tac-toe found', ticTacToe);
+    const gameSession = await this.data.add('game_session', {
+      game_type: ticTacToe.id,
+    });
+    console.log('game session', gameSession);
+  }
 }
