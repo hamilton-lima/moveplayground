@@ -21,6 +21,12 @@ export class TicTacToeGameRenderComponent implements OnInit {
     ['cross', 'cross', 'circle'],
   ];
 
+  handTimestamps: (number | null)[][] = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ];
+
   private refresh: PreviewRefreshHelper;
 
   constructor(private poseState: CurrentPoseStateService) {
@@ -37,7 +43,34 @@ export class TicTacToeGameRenderComponent implements OnInit {
   }
 
   // detect if the hand position is playing
-  detectHandPosition(hand: Hand) {}
+  detectHandPosition(hand: Hand) {
+    const thirdWidth = this.canvas.width / 3;
+    const thirdHeight = this.canvas.height / 3;
+
+    // Determine the column and row based on hand position
+    const col = Math.floor(hand.x / thirdWidth);
+    const row = Math.floor(hand.y / thirdHeight);
+
+    // Ensure the calculated indexes are within bounds
+    if (col >= 0 && col < 3 && row >= 0 && row < 3) {
+      // Check if the hand is in a new quadrant
+      if (this.handTimestamps[row][col] === null) {
+        // Reset all positions to null
+        this.resetHandTimestamps();
+
+        // Set the timestamp for the new quadrant
+        this.handTimestamps[row][col] = Date.now();
+      }
+    }
+  }
+
+  resetHandTimestamps() {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        this.handTimestamps[i][j] = null;
+      }
+    }
+  }
 
   setup() {
     this.canvas = <HTMLCanvasElement>document.getElementById('gameCanvas');
@@ -60,11 +93,29 @@ export class TicTacToeGameRenderComponent implements OnInit {
   update() {
     this.clearScreen();
     this.drawBoard();
+    this.highlightQuadrant();
     this.drawElements();
   }
 
   clearScreen() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  highlightQuadrant() {
+    const thirdWidth = this.canvas.width / 3;
+    const thirdHeight = this.canvas.height / 3;
+
+    this.ctx.fillStyle = 'rgba(128, 128, 128, 0.5)'; // 30% alpha gray
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (this.handTimestamps[i][j] !== null) {
+          const x = j * thirdWidth;
+          const y = i * thirdHeight;
+          this.ctx.fillRect(x, y, thirdWidth, thirdHeight);
+        }
+      }
+    }
   }
 
   drawElements() {
