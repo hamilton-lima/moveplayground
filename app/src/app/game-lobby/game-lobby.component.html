@@ -1,0 +1,24 @@
+<section class="section">
+  <div class="container">
+    <div class="content is-large">
+      <h1>Game lobby</h1>
+      <p></p>
+      <p>You game is ready</p>
+
+      <button
+        class="button is-large is-info"
+        (click)="createSession()"
+      >
+        CREATE SESSION
+      </button>
+    </div>
+    <div class="content is-large">
+    <div *ngFor="let session of sessions">
+        {{ session | json }}
+    </div>
+    </div>
+
+  </div>
+</section>
+
+<app-footer></app-footer>

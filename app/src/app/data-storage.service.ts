@@ -6,18 +6,23 @@ import { environment } from './environments/environment';
   providedIn: 'root',
 })
 export class DataStorageService {
-  private supabase: SupabaseClient;
+  private static supabase: SupabaseClient;
 
-  constructor() {
-    this.supabase = createClient(
-      environment.supabaseProjectURL,
-      environment.supabaseApiKey
-    );
+  constructor() {}
+
+  client() {
+    if (!DataStorageService.supabase) {
+      DataStorageService.supabase = createClient(
+        environment.supabaseProjectURL,
+        environment.supabaseApiKey
+      );
+    }
+    return DataStorageService.supabase;
   }
 
   // Example method to fetch data from a public table
   async findAll(tableName: string) {
-    const { data, error } = await this.supabase.from(tableName).select('*');
+    const { data, error } = await this.client().from(tableName).select('*');
     if (error) {
       console.error('Error fetching data:', error);
       return [];
