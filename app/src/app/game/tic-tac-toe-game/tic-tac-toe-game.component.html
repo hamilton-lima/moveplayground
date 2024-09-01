@@ -9,7 +9,7 @@
 </section>
 
 <section class="section">
-  <div class="container"></div>
+  <div *ngIf="symbol" class="container">You are playing with {{ symbol }} </div>
   <div class="container">
     <app-video-preview
       class="video-preview"

@@ -15,6 +15,10 @@ import { AppStateService } from '../../app-state.service';
 import { Subject } from 'rxjs';
 import { VideoPreviewComponent } from '../../video-preview/video-preview.component';
 import { TicTacToeGameRenderComponent } from './tic-tac-toe-game-render/tic-tac-toe-game-render.component';
+import {
+  TicTacToeGameService,
+  TicTacToeParticipationSymbol,
+} from './tic-tac-toe-game.service';
 
 @Component({
   selector: 'app-tic-tac-toe-game',
@@ -33,16 +37,17 @@ import { TicTacToeGameRenderComponent } from './tic-tac-toe-game-render/tic-tac-
 })
 export class TicTacToeGameComponent implements OnInit, AfterViewInit {
   sessionID: string | null = null;
-  gameSessionParticipantion: any;
+  gameSessionParticipation: any;
   selectedCameraID: string | null = null;
   video: Subject<HTMLVideoElement> = new Subject();
+  symbol: TicTacToeParticipationSymbol | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataStorage: DataStorageService,
     private appStateService: AppStateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private service: TicTacToeGameService
   ) {}
 
   ngAfterViewInit(): void {
@@ -68,12 +73,7 @@ export class TicTacToeGameComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Validate the session by fetching session information
-    const session = await this.dataStorage.findOne(
-      'game_session',
-      this.sessionID,
-      'external_id'
-    );
+    const session = this.service.findGameSession(this.sessionID);
 
     if (!session) {
       // If the session is not valid, navigate to a not found page
@@ -81,26 +81,12 @@ export class TicTacToeGameComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // If the session is valid, create a participation record
-    const participantID = crypto.randomUUID();
-
-    const participationRecord = {
-      game_session: session.id,
-      participant: participantID,
-    };
-
-    this.gameSessionParticipantion = await this.dataStorage.addOne(
-      'game_session_participation',
-      participationRecord
+    this.gameSessionParticipation = this.service.createGameParticipation(
+      this.sessionID
     );
 
-    if (this.gameSessionParticipantion) {
-      console.log(
-        'Participation record created successfully:',
-        this.gameSessionParticipantion
-      );
-    } else {
-      console.error('Failed to create participation record');
-    }
+    this.symbol = await this.service.determineSymbol(
+      this.gameSessionParticipation
+    );
   }
 }
