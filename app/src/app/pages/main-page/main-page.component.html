@@ -8,35 +8,41 @@
         the game in real-time. Ready to jump in?
       </p>
 
-      <p>
-        To start, you'll need to enter your email and we will send you a link
-        for you to login.
-      </p>
-
-      <form (ngSubmit)="login()">
-        <input
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="Enter your email"
-          required
-        />
-        <button class="button is-large is-info" type="submit">START</button>
-      </form>
-
-      <div *ngIf="emailSent" class="notification is-info">
-        <p>Please check your email to find a login link</p>
+      <div *ngIf="user">
+        <p>Welcome {{ user.email }}</p>
       </div>
 
-      <div *ngIf="error" class="notification is-danger">
-        <p>An error happened when trying to send the login link</p>
-        <p>{{ error | json }}</p>
-      </div>
+      <div *ngIf="!user">
+        <p>
+          To start, you'll need to enter your email and we will send you a link
+          for you to login.
+        </p>
 
-      <div *ngIf="user" class="notification is-info">
-        <p>Current user: {{ user | json }}</p>
-      </div>
+        <form (ngSubmit)="login()">
+          <input
+            class="input"
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+          <button class="button is-large is-info" type="submit">START</button>
+        </form>
 
+        <div *ngIf="emailSent" class="notification is-info">
+          <p>Please check your email to find a login link</p>
+        </div>
+
+        <div *ngIf="error" class="notification is-danger">
+          <p>An error happened when trying to send the login link</p>
+          <p>{{ error | json }}</p>
+        </div>
+
+        <div *ngIf="user" class="notification is-info">
+          <p>Current user: {{ user | json }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
