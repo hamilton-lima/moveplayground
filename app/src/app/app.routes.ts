@@ -6,10 +6,12 @@ import { GameLobbyComponent } from './game-lobby/game-lobby.component';
 import { TicTacToeGameComponent } from './game/tic-tac-toe-game/tic-tac-toe-game.component';
 import { InvalidGameSessionPageComponent } from './pages/invalid-game-session-page/invalid-game-session-page.component';
 import { EmptyGameSessionIDPageComponent } from './pages/empty-game-session-idpage/empty-game-session-idpage.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
 
 export const routes: Routes = [
-  { path: '', component: WelcomePageComponent }, // Default route
-  { path: 'balloons', component: BalloonsGamePageComponent }, // /balloons route
+  { path: '', component: MainPageComponent },
+  { path: 'play', component: WelcomePageComponent },
+  { path: 'balloons', component: BalloonsGamePageComponent },
   { path: 'lobby/:gameName', component: GameLobbyComponent },
   { path: 'play/tic-tac-toe/:externalID', component: TicTacToeGameComponent },
   {
@@ -20,5 +22,5 @@ export const routes: Routes = [
     path: 'play/error/empty-session-id',
     component: EmptyGameSessionIDPageComponent,
   },
-  { path: '**', component: NotFoundPageComponent }, // /balloons route
+  { path: '**', component: NotFoundPageComponent },
 ];

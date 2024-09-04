@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataStorageService } from '../../data-storage.service';
+import { SupabaseService } from '../../supabase.service';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../../footer/footer.component';
 import { NotificationComponent } from '../../notification/notification.component';

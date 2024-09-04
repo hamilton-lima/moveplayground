@@ -5,19 +5,31 @@ import { environment } from './environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class DataStorageService {
+export class SupabaseService {
   private static supabase: SupabaseClient;
 
   constructor() {}
 
   client() {
-    if (!DataStorageService.supabase) {
-      DataStorageService.supabase = createClient(
+    if (!SupabaseService.supabase) {
+      SupabaseService.supabase = createClient(
         environment.supabaseProjectURL,
         environment.supabaseApiKey
       );
     }
-    return DataStorageService.supabase;
+    return SupabaseService.supabase;
+  }
+
+  signInWithEmail(email: string): Promise<any> {
+    return this.client().auth.signInWithOtp({ email });
+  }
+
+  signOut(): Promise<any> {
+    return this.client().auth.signOut();
+  }
+
+  getUser() {
+    return this.client().auth.getUser();
   }
 
   // Example method to fetch data from a public table
