@@ -33,11 +33,11 @@ export class WelcomePageComponent {
   constructor(private router: Router) {}
 
   balloonsGame() {
-    this.router.navigate(['/balloons']);
+    this.router.navigate(['/user/balloons']);
   }
 
   ticTacToeGame() {
-    this.router.navigate(['/lobby/tic-tac-toe']);
+    this.router.navigate(['/user/lobby/tic-tac-toe']);
   }
 
   async askCameraAccess() {

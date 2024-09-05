@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NotificationService } from '../notification.service';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { NotificationService } from '../../notification.service';
 
 @Component({
   selector: 'app-video-source-selector',
@@ -13,6 +21,7 @@ export class VideoSourceSelectorComponent implements OnInit {
   @Input() selectedCameraID: string | null = null; // Input to receive selected video device ID
   cameras: MediaDeviceInfo[] = [];
   @Output() cameraSelected = new EventEmitter<string>();
+  @ViewChild('dropdown') dropdown!: ElementRef;
 
   constructor(private notification: NotificationService) {}
 
@@ -26,7 +35,6 @@ export class VideoSourceSelectorComponent implements OnInit {
         console.log('No camera selected, preselecting first camera from list');
         this.selectCamera(this.cameras[0].deviceId);
       }
-
     } catch (err) {
       const message = 'Not able to initialize video element';
       this.notification.warning(message);
@@ -37,5 +45,6 @@ export class VideoSourceSelectorComponent implements OnInit {
   selectCamera(selectedCameraID: string) {
     this.selectedCameraID = selectedCameraID;
     this.cameraSelected.emit(selectedCameraID);
+    this.dropdown.nativeElement.open = false;
   }
 }

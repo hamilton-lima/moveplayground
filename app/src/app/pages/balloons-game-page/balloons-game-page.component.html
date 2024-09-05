@@ -1,0 +1,26 @@
+<app-common-page>
+  <div class="text-center py-8 flex flex-col">
+    <h1>Move your hand to the green circles</h1>
+    <app-video-source-selector
+      [selectedCameraID]="selectedCameraID"
+      (cameraSelected)="onCameraSelected($event)"
+    ></app-video-source-selector>
+
+    <div>GREEN: {{ greenCounter }}, RED: {{ redCounter }}, {{ time2Show }}</div>
+
+    <div class="parent-video-container">
+      <app-video-preview
+        class="video-preview"
+        [selectedCameraID]="selectedCameraID"
+        (videoReady)="onVideoReady($event)"
+      ></app-video-preview>
+      <app-pose-preview class="pose-preview" [video]="video"></app-pose-preview>
+      <app-green-balloon-game
+        (red)="onRedBalloon()"
+        (green)="onGreenBalloon()"
+        (time)="onTimeUpdate($event)"
+        class="green-balloon"
+      ></app-green-balloon-game>
+    </div>
+  </div>
+</app-common-page>

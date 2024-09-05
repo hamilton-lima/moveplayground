@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
-import { BalloonsGamePageComponent } from './balloons-game-page/balloons-game-page.component';
+import { BalloonsGamePageComponent } from './pages/balloons-game-page/balloons-game-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { GameLobbyComponent } from './game-lobby/game-lobby.component';
 import { TicTacToeGameComponent } from './game/tic-tac-toe-game/tic-tac-toe-game.component';
