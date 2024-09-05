@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  Input,
   OnInit,
   Output,
 } from '@angular/core';
@@ -19,6 +20,8 @@ class Balloon {
   color: string = '#FFFFFF';
   popped: boolean = false;
   creationTime: number = 0;
+  implosionStartTime: number | null = null; // Track when implosion starts
+  imploding: boolean = false; // Is the balloon currently imploding?
 }
 
 @Component({
@@ -44,6 +47,8 @@ export class GreenBalloonGameComponent implements OnInit {
   @Output() red = new EventEmitter<void>();
   // miliseconds
   @Output() time = new EventEmitter<number>();
+
+  @Input() drawPositionsEnabled = false;
 
   totalGameTime = 300000; // 5 minutes in milliseconds
   currentTime = 0; // Timer for each round (60 seconds)
@@ -78,11 +83,16 @@ export class GreenBalloonGameComponent implements OnInit {
   }
 
   calculateLines() {
-    const heightOfEachLine = Math.floor(this.canvas.height / this.MAX_LINES);
+    const paddingTop = 50; // Define top padding in pixels
+    const paddingBottom = 50; // Define bottom padding in pixels
+
+    // Adjust the total height by subtracting the padding
+    const availableHeight = this.canvas.height - paddingTop - paddingBottom;
+    const heightOfEachLine = Math.floor(availableHeight / this.MAX_LINES);
     const halfLine = heightOfEachLine / 2;
 
     for (let i = 1; i <= this.MAX_LINES; i++) {
-      const yPos = heightOfEachLine * i - halfLine;
+      const yPos = paddingTop + (heightOfEachLine * i - halfLine); // Apply top padding to yPos
       this.lines.push(yPos);
     }
 
@@ -110,23 +120,35 @@ export class GreenBalloonGameComponent implements OnInit {
 
   udpate() {
     this.clearScreen();
-    this.removeOldRedBalloons()
+    this.removeOldRedBalloons();
     this.keepMinimumAmountOfBalloons();
     this.drawPossiblePositions(this.possiblePositions);
     this.drawAllBalloons();
+    this.drawImplosions();
     this.time.emit(this.currentTime);
   }
 
+  drawImplosions() {
+    // Handle the implosion for each balloon
+    this.balloons.forEach((balloon) => {
+      if (balloon.imploding) {
+        this.implodeBalloon(balloon); // Call implodeBalloon at each frame
+      }
+    });
+  }
 
-removeOldRedBalloons() {
-  const currentTime = performance.now();
-  this.balloons = this.balloons.filter((balloon) => {
-    if (balloon.color === 'red' && currentTime - balloon.creationTime > 5000) {
-      return false; // Remove the balloon if it's red and older than 5 seconds
-    }
-    return true;
-  });
-}
+  removeOldRedBalloons() {
+    const currentTime = performance.now();
+    this.balloons = this.balloons.filter((balloon) => {
+      if (
+        balloon.color === 'red' &&
+        currentTime - balloon.creationTime > 5000
+      ) {
+        return false; // Remove the balloon if it's red and older than 5 seconds
+      }
+      return true;
+    });
+  }
 
   keepMinimumAmountOfBalloons() {
     const missing = this.MIN_BALLOONS - this.balloons.length;
@@ -148,10 +170,15 @@ removeOldRedBalloons() {
   }
 
   drawBalloon(balloon: Balloon) {
-    this.ctx.beginPath();
-    this.ctx.arc(balloon.x, balloon.y, balloon.radius, 0, 2 * Math.PI);
-    this.ctx.fillStyle = balloon.color;
-    this.ctx.fill();
+    this.ctx.font = `${balloon.radius * 2}px Arial`; // Set font size relative to balloon radius
+    this.ctx.textAlign = 'center'; // Align the text to the center
+    this.ctx.textBaseline = 'middle'; // Align the text to the vertical middle
+
+    // Choose the emoji based on the balloon color
+    const emoji = balloon.color === 'green' ? '⚽' : '🏀';
+
+    // Draw the emoji at the balloon's position
+    this.ctx.fillText(emoji, balloon.x, balloon.y);
   }
 
   addBalloons(balloonCount: number) {
@@ -181,6 +208,8 @@ removeOldRedBalloons() {
         radius: this.BALLOON_RADIUS,
         popped: false,
         creationTime: performance.now(),
+        implosionStartTime: 0,
+        imploding: false,
       };
 
       this.balloons.push(balloon);
@@ -210,6 +239,10 @@ removeOldRedBalloons() {
   }
 
   drawPossiblePositions(positions: { x: number; y: number }[]) {
+    if (!this.drawPositionsEnabled) {
+      return;
+    }
+
     this.ctx.strokeStyle = '#cccccc'; // Set the outline color for the empty circles
     this.ctx.lineWidth = 2;
 
@@ -231,9 +264,8 @@ removeOldRedBalloons() {
         this.red.emit();
       }
 
-      this.balloons = this.balloons.filter((one) => {
-        return one.id != balloon.id;
-      });
+      // Start the implosion effect
+      this.implodeBalloon(balloon);
     }
   }
 
@@ -260,5 +292,27 @@ removeOldRedBalloons() {
         this.popBalloon(balloon, 'mouse-click');
       }
     });
+  }
+
+  implodeBalloon(balloon: Balloon, duration: number = 500) {
+    if (!balloon.imploding) {
+      // Start the implosion and record the start time
+      balloon.imploding = true;
+      balloon.implosionStartTime = performance.now();
+      console.log('start imploding');
+    }
+
+    const currentTime = performance.now();
+    const elapsed = currentTime - (balloon.implosionStartTime ?? 0);
+    const progress = elapsed / duration;
+
+    // Shrink the balloon's radius based on the progress of the animation
+    balloon.radius = Math.max(balloon.radius * (1 - progress), 0);
+
+    // If the implosion is complete, remove the balloon from the array
+    if (progress >= 1) {
+      balloon.imploding = false;
+      this.balloons = this.balloons.filter((b) => b.id !== balloon.id);
+    }
   }
 }
