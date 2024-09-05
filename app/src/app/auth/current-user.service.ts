@@ -6,7 +6,7 @@ import { User } from '@supabase/supabase-js';
   providedIn: 'root',
 })
 export class CurrentUserService {
-  user: any;
+  user: User | undefined = undefined;
 
   constructor(private supabaseService: SupabaseService) {}
 
@@ -16,6 +16,7 @@ export class CurrentUserService {
       throw new Error(response.error.message);
     }
 
+    this.user = response.data.user;
     return response.data.user;
   }
 }
