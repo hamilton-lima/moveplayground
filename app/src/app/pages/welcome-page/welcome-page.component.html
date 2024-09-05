@@ -1,0 +1,53 @@
+<app-common-page>
+  <div class="text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+      Play time
+    </h1>
+    <p class="mt-6 text-lg leading-8 text-gray-600">
+      To start, you'll need to allow camera access. Click on START and follow
+      the prompt, click "Allow," and you're good to go!
+    </p>
+    <div class="mt-10 flex items-center justify-center gap-x-6">
+      <button *ngIf="!ready" class="btn btn-accent" (click)="askCameraAccess()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"
+          />
+        </svg>
+        <span *ngIf="started" class="loading loading-spinner"></span>
+        START
+      </button>
+
+      <div *ngIf="started">
+        <app-alert-warning *ngIf="!mediaAPIAvailable">
+          Please make sure to open this page in Internet browser that has access
+          to a camera.
+        </app-alert-warning>
+
+        <app-alert-error *ngIf="error">
+          <p>An error happened when trying to access the camera</p>
+          <p>{{ error }}</p>
+        </app-alert-error>
+
+        <div *ngIf="ready">
+          <app-alert-info>
+            We found a camera in your browser, we are ready, what game you want
+            to play?
+          </app-alert-info>
+          <button class="btn btn-primary mt-4" (click)="balloonsGame()">
+            PICK THE GREEN BALLS
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-common-page>

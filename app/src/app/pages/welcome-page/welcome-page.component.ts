@@ -1,15 +1,27 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
-import { FooterComponent } from '../footer/footer.component';
+import { FooterComponent } from '../../footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { formatErrorForDisplay } from './format.error.function';
 import { firstValueFrom, forkJoin, timer } from 'rxjs';
+import { CommonPageComponent } from '../../components/common-page/common-page.component';
+import { AlertWarningComponent } from '../../components/daisy/alert-warning/alert-warning.component';
+import { AlertErrorComponent } from '../../components/daisy/alert-error/alert-error.component';
+import { AlertInfoComponent } from '../../components/daisy/alert-info/alert-info.component';
 
 @Component({
   selector: 'app-welcome-page',
   standalone: true,
-  imports: [RouterOutlet, FooterComponent, CommonModule],
+  imports: [
+    RouterOutlet,
+    FooterComponent,
+    CommonModule,
+    CommonPageComponent,
+    AlertWarningComponent,
+    AlertErrorComponent,
+    AlertInfoComponent,
+  ],
   templateUrl: './welcome-page.component.html',
   styleUrl: './welcome-page.component.scss',
 })
