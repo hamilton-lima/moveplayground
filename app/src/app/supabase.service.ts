@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import {
+  AuthError,
+  AuthOtpResponse,
+  createClient,
+  SupabaseClient,
+} from '@supabase/supabase-js';
 import { environment } from './environments/environment';
 
 @Injectable({
@@ -20,11 +25,11 @@ export class SupabaseService {
     return SupabaseService.supabase;
   }
 
-  signInWithEmail(email: string): Promise<any> {
+  signInWithEmail(email: string): Promise<AuthOtpResponse> {
     return this.client().auth.signInWithOtp({ email });
   }
 
-  signOut(): Promise<any> {
+  signOut(): Promise<{ error: AuthError | null }> {
     return this.client().auth.signOut();
   }
 
