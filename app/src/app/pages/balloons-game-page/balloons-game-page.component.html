@@ -1,14 +1,14 @@
 <app-common-page>
   <div class="text-center py-8 flex flex-col">
-    <h1>Move your hand to the green circles</h1>
-    <app-video-source-selector
-      [selectedCameraID]="selectedCameraID"
-      (cameraSelected)="onCameraSelected($event)"
-    ></app-video-source-selector>
+    <h1 class="text-xl font-bold">Catch the ⚽ and stay away from the 🏀!</h1>
+    <div class="camera-selector">
+      <app-video-source-selector
+        [selectedCameraID]="selectedCameraID"
+        (cameraSelected)="onCameraSelected($event)"
+      ></app-video-source-selector>
+    </div>
 
-    <div>GREEN: {{ greenCounter }}, RED: {{ redCounter }}, {{ time2Show }}</div>
-
-    <div class="parent-video-container">
+    <div class="parent-video-container mt-4">
       <app-video-preview
         class="video-preview"
         [selectedCameraID]="selectedCameraID"
@@ -22,5 +22,8 @@
         class="green-balloon"
       ></app-green-balloon-game>
     </div>
+
+    <div class="mt-6">GREEN: {{ greenCounter }}, RED: {{ redCounter }}, {{ time2Show }}</div>
+
   </div>
 </app-common-page>
