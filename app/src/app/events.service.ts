@@ -29,4 +29,8 @@ export class EventsService {
     mixpanel.identify(userId);
     mixpanel.people.set({ $name: userId });
   }
+
+  people(properties: { [key: string]: any }) {
+    mixpanel.people.set(properties);
+  }
 }

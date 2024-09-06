@@ -18,7 +18,7 @@ export const routes: Routes = [
   // All routes under /user are protected by the AuthGuard
   {
     path: 'user',
-    canActivate: [AuthenticatedOnlyGuard],
+    // canActivate: [AuthenticatedOnlyGuard],
     children: [
       { path: 'play', component: WelcomePageComponent },
       { path: 'balloons', component: BalloonsGamePageComponent },
