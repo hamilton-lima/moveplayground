@@ -23,7 +23,22 @@
       ></app-green-balloon-game>
     </div>
 
-    <div class="mt-6">GREEN: {{ greenCounter }}, RED: {{ redCounter }}, {{ time2Show }}</div>
-
+    <div class="score-container">
+      <div class="stats shadow">
+        <div class="stat">
+          <div class="stat-title">⚽ catches</div>
+          <div class="stat-value text-primary">{{ greenCounter }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">🏀 mistakes</div>
+          <div class="stat-value text-primary">{{ redCounter }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">Time remaining</div>
+          <div class="stat-value text-primary">{{ time2Show }}</div>
+        </div>
+      </div>
+      
+    </div>
   </div>
 </app-common-page>

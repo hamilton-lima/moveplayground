@@ -53,7 +53,7 @@ export class BalloonsGamePageComponent implements AfterViewInit {
 
   onTimeUpdate(currentTime: number) {
     const seconds = Math.floor(currentTime / 1000);
-    this.time2Show = `Time: ${seconds} seconds`;
+    this.time2Show = `${seconds} seconds`;
     this.cdr.detectChanges();
   }
 

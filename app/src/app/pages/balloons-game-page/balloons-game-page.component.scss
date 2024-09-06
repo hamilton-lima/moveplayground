@@ -1,5 +1,6 @@
 .parent-video-container{
   position: relative;
+  height: 480px;
 }
 
 .video-preview {
@@ -30,3 +31,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
   }
   
+  .score-container {
+    position: relative;
+    margin-top: 16px; /* Adjust to add minimal space between the video container and score */
+    font-size: 1.25rem; /* Increase font size for better readability */
+    font-weight: bold; /* Make the score text bold */
+  }
