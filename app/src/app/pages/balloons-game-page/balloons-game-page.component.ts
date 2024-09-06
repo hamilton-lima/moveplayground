@@ -2,13 +2,13 @@ import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AppStateService } from '../../app-state.service';
-import { FooterComponent } from '../../footer/footer.component';
 import { GreenBalloonGameComponent } from '../../green-balloon-game/green-balloon-game.component';
-import { NotificationComponent } from '../../notification/notification.component';
 import { PosePreviewComponent } from '../../pose-preview/pose-preview.component';
 import { VideoPreviewComponent } from '../../video-preview/video-preview.component';
 import { VideoSourceSelectorComponent } from '../../components/video-source-selector/video-source-selector.component';
 import { CommonPageComponent } from '../../components/common-page/common-page.component';
+import { SoundEffectsService } from '../../sound-effects.service';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-balloons-game-page',
@@ -33,7 +33,8 @@ export class BalloonsGamePageComponent implements AfterViewInit {
 
   constructor(
     private appStateService: AppStateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private sound: SoundEffectsService
   ) {}
 
   ngAfterViewInit(): void {
@@ -43,11 +44,13 @@ export class BalloonsGamePageComponent implements AfterViewInit {
 
   onRedBalloon() {
     this.redCounter++;
+    this.sound.playNegativeFeedback();
     this.cdr.detectChanges();
   }
 
   onGreenBalloon() {
     this.greenCounter++;
+    this.sound.playPositiveFeedback();
     this.cdr.detectChanges();
   }
 
