@@ -11,6 +11,7 @@ import {
   CurrentPoseStateService,
   Hand,
 } from '../pose-detector/current-pose-state.service';
+import { Subscription } from 'rxjs';
 
 class Balloon {
   id: string = '';
@@ -54,6 +55,7 @@ export class GreenBalloonGameComponent implements OnInit {
 
   private refresh: PreviewRefreshHelper;
   possiblePositions: { x: number; y: number }[] = [];
+  handDetectedSubscription!: Subscription;
 
   constructor(private poseState: CurrentPoseStateService) {
     this.refresh = PreviewRefreshHelper.getInstance();
@@ -65,9 +67,11 @@ export class GreenBalloonGameComponent implements OnInit {
     this.possiblePositions = this.calculatePossiblePositions(5);
     this.start();
 
-    this.poseState.handDetected.subscribe((hand: Hand) => {
-      this.didHandPopBalloon(hand);
-    });
+    this.handDetectedSubscription = this.poseState.handDetected.subscribe(
+      (hand: Hand) => {
+        this.didHandPopBalloon(hand);
+      }
+    );
   }
 
   didHandPopBalloon(hand: Hand) {
@@ -132,6 +136,9 @@ export class GreenBalloonGameComponent implements OnInit {
     if (this.currentTime > this.totalGameTime) {
       this.clearScreen();
       this.refresh.stop();
+      if (this.handDetectedSubscription) {
+        this.handDetectedSubscription.unsubscribe();
+      }
     }
   }
 
