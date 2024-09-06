@@ -16,11 +16,12 @@
       ></app-video-preview>
       <app-pose-preview class="pose-preview" [video]="video"></app-pose-preview>
       <app-green-balloon-game
+        *ngIf="ready"
         (red)="onRedBalloon()"
         (green)="onGreenBalloon()"
         (time)="onTimeUpdate($event)"
         class="green-balloon"
-        [totalGameTime]="10000"
+        [totalGameTime]="gameDuration"
       ></app-green-balloon-game>
     </div>
 
@@ -28,15 +29,14 @@
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title">⚽ catches</div>
-          <div class="stat-value text-primary">{{ greenCounter }}</div>
+          <div class="stat-value text-primary text-4xl">{{ greenCounter }}</div>
         </div>
         <div class="stat">
           <div class="stat-title">🏀 mistakes</div>
-          <div class="stat-value text-primary">{{ redCounter }}</div>
+          <div class="stat-value text-primary text-4xl">{{ redCounter }}</div>
         </div>
         <div class="stat">
-          <div class="stat-title">Time remaining</div>
-          <div class="stat-value text-primary">{{ time2Show }}</div>
+          <app-timer [minutes]="remainingMinutes" [seconds]="remainingSeconds"></app-timer>
         </div>
       </div>
       
