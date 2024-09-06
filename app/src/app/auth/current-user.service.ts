@@ -19,4 +19,8 @@ export class CurrentUserService {
     this.user = response.data.user;
     return response.data.user;
   }
+
+  logout() {
+    this.supabaseService.signOut();
+  }
 }

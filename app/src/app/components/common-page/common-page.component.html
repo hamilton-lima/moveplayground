@@ -13,12 +13,13 @@
   
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
           <div *ngIf="user" class="text-sm font-semibold leading-6 text-gray-900">
-            Welcome {{ user.email }}
+            Welcome {{ user.email }} <button (click)="logout()" class="btn btn-sm">Logout</button>
           </div>
         </div>
       </nav>
     </header>
-  
+
+ 
     <div class="relative isolate px-6 pt-14 lg:px-8">
       <div
         class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
