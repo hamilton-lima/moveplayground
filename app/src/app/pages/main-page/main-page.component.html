@@ -8,7 +8,7 @@
       game in real-time. Ready to jump in?
     </p>
     <div class="mt-10 flex items-center justify-center gap-x-6">
-      <app-email-input *ngIf="!user" class="flex-grow"></app-email-input>
+      <!-- <app-email-input *ngIf="!user" class="flex-grow"></app-email-input>
       <div *ngIf="user">
         <div class="flex">
           <button
@@ -17,12 +17,24 @@
           >
             PLAY
           </button>
-          <!-- <button
+          <button
             (click)="seeScores()"
             class="btn btn-accent m-4 btn-xs sm:btn-sm md:btn-md lg:btn-lg"
           >
             SEE LAST SCORES
-          </button> -->
+          </button>
+        </div>
+      </div> -->
+
+      <!-- REMOVE AFTER LOGIN BY EMAIL IS BACK -->
+      <div>
+        <div class="flex">
+          <button
+            (click)="play()"
+            class="btn btn-accent m-4 btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+          >
+            PLAY
+          </button>
         </div>
       </div>
     </div>
