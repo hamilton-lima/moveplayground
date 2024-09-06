@@ -22,6 +22,7 @@ export const routes: Routes = [
     children: [
       { path: 'play', component: WelcomePageComponent },
       { path: 'balloons', component: BalloonsGamePageComponent },
+      { path: 'balloons/:minutes', component: BalloonsGamePageComponent },
       { path: 'lobby/:gameName', component: GameLobbyComponent },
       {
         path: 'play/tic-tac-toe/:externalID',

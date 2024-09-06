@@ -32,8 +32,8 @@ export class WelcomePageComponent {
   error: unknown;
   constructor(private router: Router) {}
 
-  balloonsGame() {
-    this.router.navigate(['/user/balloons']);
+  balloonsGame(minutes: number) {
+    this.router.navigate(['/user/balloons', minutes]);
   }
 
   ticTacToeGame() {
