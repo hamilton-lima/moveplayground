@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
-import { DataStorageService } from '../data-storage.service';
+import { SupabaseService } from '../supabase.service';
 import { environment } from '../environments/environment';
 import { EventsService } from '../events.service';
 
@@ -21,7 +21,7 @@ export class GameLobbyComponent implements OnInit {
   title = 'Assembling the game parts...';
 
   constructor(
-    private data: DataStorageService,
+    private data: SupabaseService,
     private route: ActivatedRoute,
     private router: Router,
     private events: EventsService

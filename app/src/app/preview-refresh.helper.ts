@@ -39,10 +39,10 @@ export class PreviewRefreshHelper {
 
       if (elapsedTime >= frameInterval) {
         this.lastFrameTime = currentTime - (elapsedTime % frameInterval); // Update the last frame time
+        this.render.next(elapsedTime);
       }
 
       if (this.running) {
-        this.render.next(elapsedTime);
         this.animate();
       }
     });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataStorageService } from '../../data-storage.service';
+import { SupabaseService } from '../../supabase.service';
 import { AppStateService } from '../../app-state.service';
 
 export enum TicTacToeParticipationSymbol {
@@ -13,7 +13,7 @@ export enum TicTacToeParticipationSymbol {
 })
 export class TicTacToeGameService {
   constructor(
-    private dataStorage: DataStorageService,
+    private dataStorage: SupabaseService,
     private appState: AppStateService
   ) {}
 

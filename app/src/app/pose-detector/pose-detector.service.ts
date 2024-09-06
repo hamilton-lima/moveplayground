@@ -39,7 +39,7 @@ export class PerformanceTracker {
 })
 export class PoseDetectorService {
   private detector: poseDetection.PoseDetector | null = null;
-  private tracker: PerformanceTracker = new PerformanceTracker(180);
+  private tracker: PerformanceTracker = new PerformanceTracker(30);
   private modelName4Event = 'MoveNet.MultiPose.Lightning';
 
   constructor(private events: EventsService) {}

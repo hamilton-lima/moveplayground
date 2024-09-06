@@ -1,0 +1,39 @@
+.parent-video-container{
+  position: relative;
+  height: 480px;
+}
+
+.video-preview {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  
+  .pose-preview {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  
+  .green-balloon {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+
+  .camera-selector {
+    position: fixed;
+    top: 80px; /* Adjust the top position as needed */
+    left: 20px; /* Adjust the left position as needed */
+    z-index: 1000; /* Ensure it stays on top of other elements */
+    background-color: white; /* Optionally add a background for contrast */
+    padding: 10px; /* Optional padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+  }
+  
+  .score-container {
+    position: relative;
+    margin-top: 16px; /* Adjust to add minimal space between the video container and score */
+    font-size: 1.25rem; /* Increase font size for better readability */
+    font-weight: bold; /* Make the score text bold */
+  }

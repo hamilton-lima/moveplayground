@@ -1,0 +1,49 @@
+<app-common-page>
+  <div class="text-center py-8 flex flex-col">
+    <h1 class="text-xl font-bold">Catch the ⚽ and stay away from the 🏀!</h1>
+    <div class="camera-selector">
+      <app-video-source-selector
+        [selectedCameraID]="selectedCameraID"
+        (cameraSelected)="onCameraSelected($event)"
+      ></app-video-source-selector>
+    </div>
+
+    <div class="parent-video-container mt-4">
+      <app-video-preview
+        class="video-preview"
+        [selectedCameraID]="selectedCameraID"
+        (videoReady)="onVideoReady($event)"
+      ></app-video-preview>
+      <app-pose-preview class="pose-preview" [video]="video"></app-pose-preview>
+      <app-green-balloon-game
+        *ngIf="ready"
+        (red)="onRedBalloon()"
+        (green)="onGreenBalloon()"
+        (time)="onTimeUpdate($event)"
+        class="green-balloon"
+        [totalGameTime]="gameDuration"
+      ></app-green-balloon-game>
+    </div>
+
+    <div class="score-container flex flex-col">
+      <div class="stats shadow">
+        <div class="stat">
+          <div class="stat-title">⚽ catches</div>
+          <div class="stat-value text-primary text-4xl">{{ greenCounter }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-title">🏀 mistakes</div>
+          <div class="stat-value text-primary text-4xl">{{ redCounter }}</div>
+        </div>
+        <div *ngIf="minutes" class="stat">
+          <app-timer [minutes]="remainingMinutes" [seconds]="remainingSeconds"></app-timer>
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-lg btn-accent m-4" (click)="back()">
+          BACK TO THE LIST OF GAMES
+        </button>
+      </div>
+    </div>
+  </div>
+</app-common-page>

@@ -1,0 +1,30 @@
+<app-common-page>
+  <div class="text-center py-32 sm:py-48 lg:py-56">
+    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+      Move, Play, Control
+    </h1>
+    <p class="mt-6 text-lg leading-8 text-gray-600">
+      In Move Playground, your body is the controller. Your movements shape the
+      game in real-time. Ready to jump in?
+    </p>
+    <div class="mt-10 flex items-center justify-center gap-x-6">
+      <app-email-input *ngIf="!user" class="flex-grow"></app-email-input>
+      <div *ngIf="user">
+        <div class="flex">
+          <button
+            (click)="play()"
+            class="btn btn-accent m-4 btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+          >
+            PLAY
+          </button>
+          <!-- <button
+            (click)="seeScores()"
+            class="btn btn-accent m-4 btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+          >
+            SEE LAST SCORES
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</app-common-page>

@@ -10,4 +10,5 @@ import { VERSION } from '../version';
 })
 export class FooterComponent {
   version = VERSION;
+  year = new Date().getFullYear();
 }

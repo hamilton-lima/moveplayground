@@ -5,11 +5,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataStorageService } from '../../data-storage.service';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../../footer/footer.component';
-import { NotificationComponent } from '../../notification/notification.component';
-import { VideoSourceSelectorComponent } from '../../video-source-selector/video-source-selector.component';
+import { VideoSourceSelectorComponent } from '../../components/video-source-selector/video-source-selector.component';
 import { PosePreviewComponent } from '../../pose-preview/pose-preview.component';
 import { AppStateService } from '../../app-state.service';
 import { Subject } from 'rxjs';
@@ -26,7 +24,6 @@ import {
   imports: [
     CommonModule,
     FooterComponent,
-    NotificationComponent,
     VideoSourceSelectorComponent,
     PosePreviewComponent,
     VideoPreviewComponent,
