@@ -49,8 +49,7 @@ export class GreenBalloonGameComponent implements OnInit {
   @Output() time = new EventEmitter<number>();
 
   @Input() drawPositionsEnabled = false;
-
-  totalGameTime = 300000; // 5 minutes in milliseconds
+  @Input() totalGameTime = 120000; // 2 minutes in milliseconds
   currentTime = 0; // Timer for each round (60 seconds)
 
   private refresh: PreviewRefreshHelper;
@@ -126,6 +125,14 @@ export class GreenBalloonGameComponent implements OnInit {
     this.drawAllBalloons();
     this.drawImplosions();
     this.time.emit(this.currentTime);
+    this.checkGameTime();
+  }
+
+  checkGameTime() {
+    if (this.currentTime > this.totalGameTime) {
+      this.clearScreen();
+      this.refresh.stop();
+    }
   }
 
   drawImplosions() {
