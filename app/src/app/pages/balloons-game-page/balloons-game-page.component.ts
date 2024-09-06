@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AppStateService } from '../../app-state.service';
-import { GreenBalloonGameComponent } from '../../green-balloon-game/green-balloon-game.component';
+import { GreenBalloonGameComponent } from '../../games/green-balloon-game/green-balloon-game.component';
 import { PosePreviewComponent } from '../../pose-preview/pose-preview.component';
 import { VideoPreviewComponent } from '../../video-preview/video-preview.component';
 import { VideoSourceSelectorComponent } from '../../components/video-source-selector/video-source-selector.component';

@@ -6,11 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { PreviewRefreshHelper } from '../preview-refresh.helper';
+import { PreviewRefreshHelper } from '../../preview-refresh.helper';
 import {
   CurrentPoseStateService,
   Hand,
-} from '../pose-detector/current-pose-state.service';
+} from '../../pose-detector/current-pose-state.service';
 import { Subscription } from 'rxjs';
 
 class Balloon {
@@ -133,7 +133,8 @@ export class GreenBalloonGameComponent implements OnInit {
   }
 
   checkGameTime() {
-    if (this.currentTime > this.totalGameTime) {
+    // totalGametime = 0, is the playground mode
+    if (this.totalGameTime > 0 && this.currentTime > this.totalGameTime) {
       this.clearScreen();
       this.refresh.stop();
       if (this.handDetectedSubscription) {
