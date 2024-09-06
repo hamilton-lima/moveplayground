@@ -8,7 +8,7 @@
       <div>
         <button
           *ngIf="!ready"
-          class="btn btn-accent"
+          class="btn btn-large  btn-accent"
           (click)="askCameraAccess()"
         >
           <span *ngIf="started" class="loading loading-spinner"></span>
@@ -46,11 +46,11 @@
             We found a camera in your browser, we are ready, what game you want
             to play?
           </app-alert-info>
-          <button class="btn btn-primary m-4" (click)="balloonsGame(2)">
-            CATCH ⚽, AVOID 🏀 (2 MINUTES)
+          <button class="btn btn-lg  btn-primary m-4" (click)="balloonsGame(2)">
+            PLAY CATCH BALLS ⚽🏀 (2 MINUTES)
           </button>
-          <button class="btn btn-primary m-4" (click)="balloonsGame(0)">
-            CATCH ⚽, AVOID 🏀 (FREE TIME)
+          <button class="btn btn-lg btn-primary m-4" (click)="balloonsGame(0)">
+            PLAY CATCH BALLS ⚽🏀 (FREE TIME)
           </button>
         </div>
       </div>

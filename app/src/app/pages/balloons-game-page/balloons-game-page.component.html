@@ -35,7 +35,7 @@
           <div class="stat-title">🏀 mistakes</div>
           <div class="stat-value text-primary text-4xl">{{ redCounter }}</div>
         </div>
-        <div class="stat">
+        <div *ngIf="minutes" class="stat">
           <app-timer [minutes]="remainingMinutes" [seconds]="remainingSeconds"></app-timer>
         </div>
       </div>
