@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { RouterOutlet, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+import { RouterOutlet, ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRoute
 import { firstValueFrom, Subject } from 'rxjs';
 import { AppStateService } from '../../app-state.service';
 import { GreenBalloonGameComponent } from '../../games/green-balloon-game/green-balloon-game.component';
@@ -35,7 +35,6 @@ import { TimerComponent } from '../../components/daisy/timer/timer.component';
 export class BalloonsGamePageComponent implements AfterViewInit, OnInit {
   selectedCameraID: string | null = null;
   video: Subject<HTMLVideoElement> = new Subject();
-  time2Show = '';
   redCounter = 0;
   greenCounter = 0;
   minutes: number = 0; // Add a variable to store minutes
@@ -48,7 +47,8 @@ export class BalloonsGamePageComponent implements AfterViewInit, OnInit {
     private appStateService: AppStateService,
     private cdr: ChangeDetectorRef,
     private sound: SoundEffectsService,
-    private route: ActivatedRoute // Inject ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -87,13 +87,12 @@ export class BalloonsGamePageComponent implements AfterViewInit, OnInit {
       totalMatchTimeInSeconds - elapsedTimeInSeconds; // Calculate the remaining time
 
     if (remainingTimeInSeconds <= 0) {
-      this.time2Show = '0:00'; // Handle the case where the time is up
+      this.remainingMinutes = 0;
+      this.remainingSeconds = 0;
     } else {
       const minutes = Math.floor(remainingTimeInSeconds / 60);
       const seconds = remainingTimeInSeconds % 60;
 
-      // Format time as minutes:seconds (e.g., 3:09)
-      this.time2Show = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
       this.remainingMinutes = minutes;
       this.remainingSeconds = seconds;
     }
@@ -111,5 +110,9 @@ export class BalloonsGamePageComponent implements AfterViewInit, OnInit {
   onVideoReady(video: HTMLVideoElement) {
     console.log('video updated', video);
     this.video.next(video);
+  }
+
+  back() {
+    this.router.navigate(['/user/play']);
   }
 }

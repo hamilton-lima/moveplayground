@@ -25,7 +25,7 @@
       ></app-green-balloon-game>
     </div>
 
-    <div class="score-container">
+    <div class="score-container flex flex-col">
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title">⚽ catches</div>
@@ -39,7 +39,11 @@
           <app-timer [minutes]="remainingMinutes" [seconds]="remainingSeconds"></app-timer>
         </div>
       </div>
-      
+      <div>
+        <button class="btn btn-lg btn-accent m-4" (click)="back()">
+          BACK TO THE LIST OF GAMES
+        </button>
+      </div>
     </div>
   </div>
 </app-common-page>
