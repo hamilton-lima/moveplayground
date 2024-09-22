@@ -15,3 +15,6 @@ graph LR
     E1 -->|Collaborative Movement| F[Shared Virtual Space]
     E2 -->|Collaborative Movement| F[Shared Virtual Space]
 ```
+
+## License 
+moveplayground is [fair-code](https://faircode.io/) distributed under [**Apache 2.0 with Commons Clause**](https://github.com/hamilton-lima/moveplayground/blob/main/LICENSE.md) license.
