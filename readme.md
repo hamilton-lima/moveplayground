@@ -17,4 +17,4 @@ graph LR
 ```
 
 ## License 
-moveplayground is [fair-code](https://faircode.io/) distributed under [**Apache 2.0 with Commons Clause**](https://github.com/hamilton-lima/moveplayground/blob/main/LICENSE.md) license.
+moveplayground is [fair-code](https://faircode.io/) distributed under [**Apache 2.0 with Commons Clause**](https://github.com/hamilton-lima/moveplayground/blob/master/LICENSE.md) license.
