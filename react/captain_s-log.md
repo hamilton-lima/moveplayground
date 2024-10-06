@@ -48,3 +48,10 @@ Changing tsconfig.json to point to the right folders
 ``` 
 
 Still have this issue when opens App.tsx `Cannot find module 'expo-status-bar' or its corresponding type declarations.ts(2307)`, can it be missing types?
+
+💀 Only after a clear restart of vscode the error stopped, ok ok typescript compiler you needed some time, I got it.
+
+
+
+npm install react-native-paper
+npx expo install react-native-vector-icons react-native-safe-area-context
