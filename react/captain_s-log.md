@@ -21,3 +21,30 @@
 › Web is waiting on http://localhost:19006
 ```
 
+## TS works sometimes
+
+Found this when opening tsconfig.json
+```
+Cannot find type definition file for 'prop-types'.
+  The file is in the program because:
+    Entry point for implicit type library 'prop-types'
+```
+
+`npm install @types/prop-types --save-dev` did not fix it
+
+Changing tsconfig.json to point to the right folders
+
+```
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+}
+``` 
+
+Still have this issue when opens App.tsx `Cannot find module 'expo-status-bar' or its corresponding type declarations.ts(2307)`, can it be missing types?
