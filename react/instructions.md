@@ -64,12 +64,12 @@ flowchart TD
 
 - Create a next.js client side only rendering application
 - Use typescript 
-- Use [daisyui](https://daisyui.com/) visual components
+- Use https://daisyui.com for ui components
 - React router for page navigation https://reactrouter.com/en/main/start/overview
 - Keep application state using https://github.com/pmndrs/zustand 
-- Generate tests using https://jestjs.io/
+- Generate tests using https://jestjs.io
 - When making async calls use Suspense and a error boundary component https://react.dev/reference/react/Suspense 
-- When fetching remote data use https://axios-http.com/
-- All text in the ui should translatable to English-US and Portuguese-Brazil using https://react.i18next.com/
-- The game implementation should be done using https://phaser.io
+- When fetching remote data use https://axios-http.com
+- All text in the ui should translatable to English-US and Portuguese-Brazil using https://react.i18next.com
+- The game implementation should be done using https://pixijs.com
 
