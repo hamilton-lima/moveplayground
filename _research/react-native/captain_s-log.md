@@ -52,6 +52,45 @@ Still have this issue when opens App.tsx `Cannot find module 'expo-status-bar' o
 💀 Only after a clear restart of vscode the error stopped, ok ok typescript compiler you needed some time, I got it.
 
 
-
+``` 
 npm install react-native-paper
 npx expo install react-native-vector-icons react-native-safe-area-context
+``` 
+
+Humm first page component... so far so good how to show the message as a modal?
+
+# 06-Oct-2024
+
+## Time to do some page navigation, AKA push to the stack!
+
+```
+npm install @react-navigation/native
+npx expo install react-native-screens react-native-safe-area-context
+npm install @react-navigation/native-stack
+```
+
+Here we go again, react navigation feels a little convoluted ad first glance, let's hear what the community says... https://results.2023.stateofreactnative.com/navigation/ oh well lot of people using it, but expo-router is growing, why? HA! expo-router uses file based routing, so the message is follow a standard, e.g. save in a folder named `app` and you are good, probably the reason for some `_XXX` files I saw in the examples, good pattern... 😊🔥
+
+```
+npx expo install expo-router
+```
+I think the chatgpt conversation got saturated, when comparing the guidance to expo route seems far from the example apps I have, let me take a look at the docs https://docs.expo.dev/router/installation/#quick-start, maybe is time for cursor? The feature to tag documentation to use as reference seems to be THE key to expedite the learning proces.
+
+## expo-router install 
+
+```
+npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
+```
+
+> For the property main, use the expo-router/entry as its value in the package.> json. The initial client file is app/_layout.js.
+
+
+WAT? https://docs.expo.dev/router/installation/#modify-project-configuration
+ok skipping this step, no idea what this is 😁😁
+
+```
+npx expo install react-native-web react-dom
+```
+
+
+
