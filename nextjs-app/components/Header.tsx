@@ -20,15 +20,6 @@ export default function Header() {
           <li>
             <Link href="/about">About</Link>
           </li>
-          {/* <li>
-            <a>Pricing</a>
-          </li>
-          <li>
-            <a>Blog</a>
-          </li>
-          <li>
-            <a>Contact</a>
-          </li> */}
           <a className="btn btn-sm btn-primary">Log in</a>
         </ul>
       </div>
