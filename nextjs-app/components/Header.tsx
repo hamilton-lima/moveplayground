@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <nav className="navbar justify-between bg-base-300">
       <a className="btn btn-ghost text-lg">
-        <img alt="Logo" src="/logo-oct-2024.svg" className="w-12" />
+        <img alt="Logo" src="/logo.svg" className="w-12" />
         MovePlayground
       </a>
 
