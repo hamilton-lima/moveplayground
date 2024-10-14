@@ -1,5 +1,26 @@
 # migrating the existing angular app to react, step by step notes
 
+## add daisy and update the home page 
+
+all tailwind dependencies are in place... good
+
+npm install daisyui
+
+add daisy to tailwind 
+```
+// tailwind.config.js
+module.exports = {
+    ...
+  plugins: [require('daisyui')], // Add DaisyUI plugin here
+};
+```
+
+ahhh class -> className 🔥🔥
+
+
+
+
+## empty page
 
 npx create-next-app@latest nextjs-app
 cd nextjs-app
