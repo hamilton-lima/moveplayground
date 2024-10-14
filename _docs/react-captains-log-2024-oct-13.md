@@ -14,6 +14,13 @@ Expected server HTML to contain a matching <html> in <div>.
     <html>
 ``` 
 
+Oh wow, it seems that everything was mixed ... https://nextjs.org/docs/app/building-your-application/routing
+BAD ChatGPT, BAD ChatGPT...
+
+Claude gave a way clear answer, fixing the issues from the other oracle...
+- every folder under app is a node in the path, e.g. app/about = /about in the navigation
+- `layout.tsx` will be used by the current folder and its children
+- every folder with `page.tsx` will render that component
 
 ## create code context to ask questions to ChatGPT
 
