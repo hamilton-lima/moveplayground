@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ReactNode } from "react";
+import DefaultLayout from "../components/DefaultLayout";
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,11 +16,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <html>
       <body>
-        <div>
-          <header>Header Content</header>
-          <main>{children}</main>
-          <footer>Footer Content</footer>
-        </div>
+        <DefaultLayout>{children}</DefaultLayout>
       </body>
     </html>
   );
