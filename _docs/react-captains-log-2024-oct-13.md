@@ -1,5 +1,29 @@
 # migrating the existing angular app to react, step by step notes
 
+## error when navigating to /about 💀
+
+```
+Unhandled Runtime Error
+Error: Hydration failed because the initial UI does not match what was rendered on the server.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+
+Expected server HTML to contain a matching <html> in <div>.
+
+<MyApp>
+  <RootLayout>
+    <html>
+``` 
+
+
+## create code context to ask questions to ChatGPT
+
+usefull component to give context to chatgpt when asking for help
+https://github.com/buimanhtoan-it/combine-code-in-folder
+select multiple files-> Combine code to clipboard 🔥
+
+## random notes
+- library of daisy layouts https://components.willpinha.link/
+- `public` is the folder to save images, convention over configuration!!
 
 ## Create layout component 
 

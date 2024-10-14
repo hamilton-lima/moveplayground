@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Header() {
   return (
     <nav className="navbar justify-between bg-base-300">
@@ -16,7 +18,7 @@ export default function Header() {
           className="dropdown-content menu z-[1] bg-base-200 p-6 rounded-box shadow w-56 gap-2"
         >
           <li>
-            <a>About</a>
+            <Link href="/about">About</Link>
           </li>
           {/* <li>
             <a>Pricing</a>
@@ -33,7 +35,7 @@ export default function Header() {
 
       <ul className="hidden menu sm:menu-horizontal gap-2">
         <li>
-          <a>About</a>
+          <Link href="/about">About</Link>
         </li>
         <a className="btn btn-sm btn-primary">Log in</a>
       </ul>
