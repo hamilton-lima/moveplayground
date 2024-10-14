@@ -8,9 +8,9 @@ interface LayoutProps {
 
 export default function DefaultLayout({ children }: LayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <main className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow bg-white">
+      <div className="flex-grow bg-white">
         <div className="relative isolate px-6 pt-14 lg:px-8">
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -22,8 +22,8 @@ export default function DefaultLayout({ children }: LayoutProps) {
             aria-hidden="true"
           ></div>
         </div>
-      </main>
+      </div>
       <Footer />
-    </div>
+    </main>
   );
 }
