@@ -7,17 +7,13 @@ import { IntlProvider } from "react-intl";
 import { messages } from "./i18n/messages";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: { lang: string };
-}) {
-  const lang = params.lang || "en";
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const lang = pathname.split("/")[1] || "en";
 
   return (
     <html lang={lang}>
@@ -48,5 +44,3 @@ export default function RootLayout({
   );
 }
 
-// Export generateStaticParams here
-// export { generateStaticParams } from './i18n/generateStaticParams';
