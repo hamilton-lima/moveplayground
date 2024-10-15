@@ -11,7 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   detectLanguage,
-  supportedLanguages,
+  determineLanguage,
   SupportedLanguage,
 } from "./i18n/languageUtils";
 
@@ -28,19 +28,18 @@ export default function RootLayout({
 
   useEffect(() => {
     const detectedLang = detectLanguage();
-    const currentLang = pathname.split("/")[1] as SupportedLanguage;
+    const currentLang = pathname.split("/")[1];
+    const { newLang, shouldRedirect } = determineLanguage(
+      currentLang,
+      detectedLang
+    );
 
-    if (
-      currentLang !== detectedLang &&
-      supportedLanguages.includes(currentLang)
-    ) {
-      setLang(currentLang);
-    } else if (currentLang !== detectedLang) {
-      const newPath = `/${detectedLang}${pathname}`;
+    if (shouldRedirect) {
+      const newPath = `/${newLang}${pathname.replace(/^\/[^\/]+/, "")}`;
       router.push(newPath);
-    } else {
-      setLang(detectedLang);
     }
+
+    setLang(newLang);
   }, [pathname, router]);
 
   return (

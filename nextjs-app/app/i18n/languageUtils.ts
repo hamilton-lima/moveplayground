@@ -29,3 +29,19 @@ export function detectLanguage(): SupportedLanguage {
   // Fallback to 'en'
   return "en";
 }
+
+export function determineLanguage(
+  currentLang: string,
+  detectedLang: SupportedLanguage
+): { newLang: SupportedLanguage; shouldRedirect: boolean } {
+  if (
+    currentLang !== detectedLang &&
+    supportedLanguages.includes(currentLang as SupportedLanguage)
+  ) {
+    return { newLang: currentLang as SupportedLanguage, shouldRedirect: false };
+  } else if (currentLang !== detectedLang) {
+    return { newLang: detectedLang, shouldRedirect: true };
+  } else {
+    return { newLang: detectedLang, shouldRedirect: false };
+  }
+}
