@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Activity, Zap, BarChart2, Settings } from "lucide-react";
 import Link from "next/link";
