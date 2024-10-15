@@ -1,5 +1,3 @@
-"use client";
-
 import { FormattedMessage } from "react-intl";
 import packageJSON from "../package.json";
 
