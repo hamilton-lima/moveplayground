@@ -7,13 +7,41 @@ import { IntlProvider } from "react-intl";
 import { messages } from "./i18n/messages";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  detectLanguage,
+  supportedLanguages,
+  SupportedLanguage,
+} from "./i18n/languageUtils";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
-  const lang = pathname.split("/")[1] || "en";
+  const router = useRouter();
+  const [lang, setLang] = useState<SupportedLanguage>("en");
+
+  useEffect(() => {
+    const detectedLang = detectLanguage();
+    const currentLang = pathname.split("/")[1] as SupportedLanguage;
+
+    if (
+      currentLang !== detectedLang &&
+      supportedLanguages.includes(currentLang)
+    ) {
+      setLang(currentLang);
+    } else if (currentLang !== detectedLang) {
+      const newPath = `/${detectedLang}${pathname}`;
+      router.push(newPath);
+    } else {
+      setLang(detectedLang);
+    }
+  }, [pathname, router]);
 
   return (
     <html lang={lang}>
@@ -25,10 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </Head>
       <body className={inter.className}>
-        <IntlProvider
-          messages={messages[lang as keyof typeof messages]}
-          locale={lang}
-        >
+        <IntlProvider messages={messages[lang]} locale={lang}>
           <main className="flex flex-col min-h-screen">
             <Header lang={lang} />
             <div className="flex-grow bg-white">
@@ -43,4 +68,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
