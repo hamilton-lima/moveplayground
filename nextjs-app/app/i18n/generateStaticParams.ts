@@ -1,4 +1,4 @@
-import { supportedLanguages, SupportedLanguage } from "./languageUtils";
+import { supportedLanguages } from "./languageUtils";
 
 export function generateStaticParams() {
   return supportedLanguages.map((lang) => ({ lang }));

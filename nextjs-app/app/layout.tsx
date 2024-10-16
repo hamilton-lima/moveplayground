@@ -60,7 +60,7 @@ export default function RootLayout({
                 <div className="mx-auto max-w-2xl">{children}</div>
               </div>
             </div>
-            <Footer lang={lang} />
+            <Footer />
           </main>
         </IntlProvider>
       </body>

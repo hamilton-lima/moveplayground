@@ -3,6 +3,7 @@
 import { IntlProvider } from "react-intl";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SupportedLanguage } from "./i18n/languageUtils";
 
 export default function ClientLayout({
   children,
@@ -10,7 +11,7 @@ export default function ClientLayout({
   messages,
 }: {
   children: React.ReactNode;
-  lang: string;
+  lang: SupportedLanguage;
   messages: Record<string, string>;
 }) {
   return (
@@ -22,7 +23,7 @@ export default function ClientLayout({
             <div className="mx-auto max-w-2xl">{children}</div>
           </div>
         </div>
-        <Footer lang={lang} />
+        <Footer />
       </main>
     </IntlProvider>
   );

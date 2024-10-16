@@ -2,7 +2,7 @@
 import { FormattedMessage } from "react-intl";
 import packageJSON from "../package.json";
 
-export default function Footer({ lang }: { lang: string }) {
+export default function Footer() {
   const version = packageJSON.version;
   const year = new Date().getFullYear();
 

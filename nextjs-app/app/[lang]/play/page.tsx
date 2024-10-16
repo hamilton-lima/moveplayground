@@ -2,11 +2,7 @@
 
 import { FormattedMessage } from "react-intl";
 
-export default function Play({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
+export default function Play() {
   return (
     <h1>
       <FormattedMessage id="play.title" />
