@@ -10,6 +10,9 @@
     "generate-favicon": "node scripts/generate-favicon.js"
   },
   "dependencies": {
+    "@tensorflow-models/pose-detection": "^2.1.3",
+    "@tensorflow/tfjs": "^4.21.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.21.0",
     "daisyui": "^4.12.13",
     "lucide-react": "^0.452.0",
     "next": "14.2.15",

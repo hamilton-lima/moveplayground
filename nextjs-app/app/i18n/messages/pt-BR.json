@@ -30,5 +30,14 @@
     "about.getStarted": "Comece Hoje",
     "login.title": "Página de Login",
     "play.title": "Página de Jogo",
-    "footer.copyright": "Direitos autorais © {year} - Todos os direitos reservados por MOVEPLAYGROUND - versão {version}"
+    "footer.copyright": "Direitos autorais © {year} - Todos os direitos reservados por MOVEPLAYGROUND - versão {version}",
+    "play.checkingCamera": "Verificando Acesso à Câmera",
+    "play.pleaseWait": "Por favor, aguarde enquanto verificamos o acesso à sua câmera...",
+    "play.calibration": "Calibração",
+    "play.calibrationInstructions": "Por favor, fique em frente à câmera de modo que todo o seu torso esteja visível.",
+    "play.gameSelection": "Seleção de Jogo",
+    "play.readyToPlay": "Estamos prontos! Que jogo você quer jogar?",
+    "play.userCatchBall2Min": "Pegar a Bola (2 minutos)",
+    "play.userCatchBallFreeTime": "Pegar a Bola (Tempo Livre)",
+    "play.loading": "Carregando TensorFlow.js e configurando a detecção de pose..."
 }

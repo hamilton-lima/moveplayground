@@ -70,6 +70,6 @@ flowchart TD
 - Generate tests using https://jestjs.io
 - When making async calls use Suspense and a error boundary component https://react.dev/reference/react/Suspense 
 - When fetching remote data use https://axios-http.com
-- All text in the ui should translatable to English-US and Portuguese-Brazil using https://react.i18next.com
+- All text in the ui should translatable to English-US and Portuguese-Brazil using https://formatjs.io/docs/react-intl/
 - The game implementation should be done using https://pixijs.io/pixi-react
 
